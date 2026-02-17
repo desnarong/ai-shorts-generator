@@ -1,10 +1,10 @@
 import type { Metadata } from 'next'
-import { SessionProvider } from 'next-auth/react'
+import { Providers } from '@/components/Providers'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'AI Shorts Generator - Create Viral Shorts in Minutes',
-  description: 'Transform your content into engaging short videos with AI. Generate scripts, voiceovers, and videos automatically.',
+  title: 'AI Shorts Generator - สร้างวิดีโอสั้นด้วย AI',
+  description: 'แปลงเนื้อหาเป็นวิดีโอสั้นน่าสนใจด้วย AI',
 }
 
 export default function RootLayout({
@@ -15,9 +15,9 @@ export default function RootLayout({
   return (
     <html lang="th">
       <body className="antialiased">
-        <SessionProvider>
+        <Providers>
           {children}
-        </SessionProvider>
+        </Providers>
       </body>
     </html>
   )
