@@ -8,7 +8,7 @@ import {
   Zap, Video, CreditCard, LogOut,
   Play, Download, Crown,
   Sparkles, User, Menu, X, RefreshCw,
-  Copy, Check, Hash, Volume2
+  Copy, Check, Hash, Volume2, AlertCircle
 } from 'lucide-react'
 
 export default function Dashboard() {
@@ -18,6 +18,7 @@ export default function Dashboard() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [generating, setGenerating] = useState(false)
   const [lastResult, setLastResult] = useState<any>(null)
+  const [error, setError] = useState('')
   
   const [contentType, setContentType] = useState('url')
   const [content, setContent] = useState('')
@@ -27,6 +28,7 @@ export default function Dashboard() {
   const [videos, setVideos] = useState<any[]>([])
   const [credits, setCredits] = useState({ used: 1, limit: 3 })
   const [copied, setCopied] = useState(false)
+  const [userPlan, setUserPlan] = useState('free')
 
   if (status === 'loading') {
     return (
@@ -41,9 +43,31 @@ export default function Dashboard() {
     return null
   }
 
+  // Plan features
+  const planFeatures = {
+    free: { voices: ['thai_female', 'thai_male'], watermark: true, quality: '720p' },
+    starter: { voices: ['thai_female', 'thai_male', 'rachel', 'josh', 'emma'], watermark: false, quality: '720p' },
+    pro: { voices: ['thai_female', 'thai_male', 'rachel', 'josh', 'emma', 'david', 'crystal', 'aria', 'fin', 'domi'], watermark: false, quality: '1080p' },
+    business: { voices: ['thai_female', 'thai_male', 'rachel', 'josh', 'emma', 'david', 'crystal', 'aria', 'fin', 'domi'], watermark: false, quality: '4k' }
+  }
+
+  const voiceNames: Record<string, string> = {
+    thai_female: 'น้องแนน (ไทย)',
+    thai_male: 'พี่โจ้ (ไทย)',
+    rachel: 'Rachel (English)',
+    josh: 'Josh (English)',
+    emma: 'Emma (English)',
+    david: 'David (English)',
+    crystal: 'Crystal (English)',
+    aria: 'Aria (English)',
+    fin: 'Fin (English)',
+    domi: 'Domi (English)'
+  }
+
   const handleGenerate = async () => {
     if (!content.trim()) return
     setGenerating(true)
+    setError('')
     setLastResult(null)
     
     try {
@@ -69,12 +93,17 @@ export default function Dashboard() {
           status: 'completed',
           createdAt: new Date().toISOString().split('T')[0],
           thumbnail: null,
-          duration: '0:30'
+          duration: '0:30',
+          quality: data.video.quality,
+          watermark: data.video.watermark
         }, ...prev])
         setContent('')
+        setCredits(prev => ({ ...prev, used: prev.used + 1 }))
+      } else {
+        setError(data.error || 'เกิดข้อผิดพลาด')
       }
-    } catch (error) {
-      console.error('Generation error:', error)
+    } catch (err) {
+      setError('เกิดข้อผิดพลาด')
     } finally {
       setGenerating(false)
     }
@@ -92,12 +121,7 @@ export default function Dashboard() {
     { id: 'credits', label: 'เครดิต', icon: CreditCard },
   ]
 
-  const voices = [
-    { id: 'thai_female', name: 'น้องแนน (ไทย)' },
-    { id: 'thai_male', name: 'พี่โจ้ (ไทย)' },
-    { id: 'rachel', name: 'Rachel (English)' },
-    { id: 'josh', name: 'Josh (English)' },
-  ]
+  const currentPlanFeatures = planFeatures[userPlan as keyof typeof planFeatures] || planFeatures.free
 
   return (
     <div className="min-h-screen bg-main grid-pattern">
@@ -173,6 +197,13 @@ export default function Dashboard() {
                 สร้างวิดีโอใหม่
               </h2>
 
+              {error && (
+                <div className="flex items-center gap-2 px-4 py-3 bg-red-500/10 border border-red-500/30 rounded-xl mb-4">
+                  <AlertCircle className="w-5 h-5 text-red-400" />
+                  <span className="text-red-400 text-sm">{error}</span>
+                </div>
+              )}
+
               <div className="space-y-5">
                 <div>
                   <label className="block text-zinc-400 text-sm mb-2">ประเภทเนื้อหา</label>
@@ -229,10 +260,26 @@ export default function Dashboard() {
                     onChange={(e) => setVoice(e.target.value)}
                     className="input-field"
                   >
-                    {voices.map(v => (
-                      <option key={v.id} value={v.id}>{v.name}</option>
+                    {currentPlanFeatures.voices.map(v => (
+                      <option key={v} value={v}>{voiceNames[v] || v}</option>
                     ))}
                   </select>
+                  <p className="text-xs text-zinc-500 mt-1">
+                    แพลน {userPlan} รองรับ {currentPlanFeatures.voices.length} เสียง
+                  </p>
+                </div>
+
+                <div className="bg-zinc-800/50 rounded-xl p-4 text-sm">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-zinc-400">คุณภาพ</span>
+                    <span className="text-[#22c55e]">{currentPlanFeatures.quality}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-zinc-400">Watermark</span>
+                    <span className={currentPlanFeatures.watermark ? 'text-yellow-500' : 'text-[#22c55e]'}>
+                      {currentPlanFeatures.watermark ? 'มี' : 'ไม่มี'}
+                    </span>
+                  </div>
                 </div>
 
                 <button
@@ -260,17 +307,19 @@ export default function Dashboard() {
               
               {lastResult ? (
                 <div className="space-y-4">
-                  {/* Video Preview */}
                   <div className="bg-black rounded-2xl aspect-[9/16] flex items-center justify-center border border-zinc-800">
                     <video 
                       src={lastResult.videoUrl} 
                       className="w-full h-full object-cover rounded-2xl"
                       controls
-                      poster=""
                     />
                   </div>
 
-                  {/* Script */}
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-zinc-400">คุณภาพ: {lastResult.quality}</span>
+                    {lastResult.watermark && <span className="text-yellow-500">Watermark</span>}
+                  </div>
+
                   <div className="bg-zinc-900 rounded-xl p-4">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm text-zinc-400 flex items-center gap-2">
@@ -286,7 +335,6 @@ export default function Dashboard() {
                     <p className="text-sm whitespace-pre-wrap">{lastResult.script}</p>
                   </div>
 
-                  {/* Hashtags */}
                   <div className="flex flex-wrap gap-2">
                     {lastResult.hashtags?.map((tag: string, i: number) => (
                       <span key={i} className="px-3 py-1 bg-[#22c55e]/10 text-[#22c55e] rounded-full text-sm">
@@ -295,7 +343,6 @@ export default function Dashboard() {
                     ))}
                   </div>
 
-                  {/* Audio */}
                   {lastResult.voiceUrl && (
                     <div className="bg-zinc-900 rounded-xl p-4">
                       <span className="text-sm text-zinc-400 flex items-center gap-2 mb-2">
@@ -310,7 +357,6 @@ export default function Dashboard() {
                   <div className="text-center">
                     <RefreshCw className="w-12 h-12 text-[#22c55e] animate-spin mx-auto mb-4" />
                     <p className="text-zinc-500">กำลังสร้างวิดีโอ...</p>
-                    <p className="text-zinc-600 text-sm mt-2">ใช้เวลาประมาณ 2-3 นาที</p>
                   </div>
                 </div>
               ) : (
@@ -333,7 +379,6 @@ export default function Dashboard() {
               <div className="text-center py-16 text-zinc-500">
                 <Video className="w-16 h-16 mx-auto mb-4 opacity-30" />
                 <p>ยังไม่มีวิดีโอ</p>
-                <p className="text-sm mt-2">ไปสร้างวิดีโอแรกของคุณ!</p>
               </div>
             ) : (
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -344,6 +389,11 @@ export default function Dashboard() {
                       <span className="absolute bottom-2 right-2 px-2 py-1 bg-black/80 rounded text-xs">
                         {video.duration}
                       </span>
+                      {video.watermark && (
+                        <span className="absolute top-2 left-2 px-2 py-1 bg-yellow-500/20 text-yellow-500 rounded text-xs">
+                          WM
+                        </span>
+                      )}
                     </div>
                     <div className="p-4">
                       <h3 className="font-medium mb-2 truncate">{video.title}</h3>

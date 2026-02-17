@@ -5,6 +5,48 @@ import { generateVideo } from '@/lib/ai/video'
 
 export const dynamic = 'force-dynamic'
 
+// Plan features
+const PLAN_FEATURES = {
+  free: {
+    maxCredits: 3,
+    watermark: true,
+    maxQuality: '720p',
+    voices: ['thai_female', 'thai_male'],
+    maxVideosPerMonth: 3
+  },
+  starter: {
+    maxCredits: 10,
+    watermark: false,
+    maxQuality: '720p',
+    voices: ['thai_female', 'thai_male', 'rachel', 'josh', 'emma'],
+    maxVideosPerMonth: 10
+  },
+  pro: {
+    maxCredits: 30,
+    watermark: false,
+    maxQuality: '1080p',
+    voices: ['thai_female', 'thai_male', 'rachel', 'josh', 'emma', 'david', 'crystal', 'aria', 'fin', 'domi'],
+    maxVideosPerMonth: 30
+  },
+  business: {
+    maxCredits: 999999,
+    watermark: false,
+    maxQuality: '4k',
+    voices: ['thai_female', 'thai_male', 'rachel', 'josh', 'emma', 'david', 'crystal', 'aria', 'fin', 'domi'],
+    maxVideosPerMonth: 999999
+  }
+}
+
+// Mock user for demo (in production, get from database)
+const getMockUser = (userId: string) => ({
+  id: userId,
+  email: 'demo@ais horts.com',
+  name: 'Demo User',
+  plan: 'free',
+  credits: 3,
+  creditsUsed: 0
+})
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
@@ -13,7 +55,7 @@ export async function POST(req: NextRequest) {
       content, 
       voiceId,
       platform,
-      userId 
+      userId = 'demo'
     } = body
 
     if (!content) {
@@ -23,13 +65,40 @@ export async function POST(req: NextRequest) {
       )
     }
 
+    // Get user (mock for demo)
+    const user = getMockUser(userId)
+    const planFeatures = PLAN_FEATURES[user.plan as keyof typeof PLAN_FEATURES] || PLAN_FEATURES.free
+
+    // Check credits
+    const availableCredits = user.credits - user.creditsUsed
+    if (availableCredits <= 0) {
+      return NextResponse.json({
+        error: 'ไม่มีเครดิตเพียงพอ',
+        code: 'NO_CREDITS',
+        required: 1,
+        available: 0
+      }, { status: 403 })
+    }
+
+    // Check voice limit
+    if (voiceId && !planFeatures.voices.includes(voiceId)) {
+      return NextResponse.json({
+        error: 'เสียงนี้ไม่พร้อมใช้งานในแพลนของคุณ',
+        code: 'VOICE_NOT_ALLOWED',
+        availableVoices: planFeatures.voices
+      }, { status: 403 })
+    }
+
+    // Determine video quality based on plan
+    const videoQuality = platform === 'youtube' ? '1080p' : planFeatures.maxQuality
+
     // Step 1: Generate Script
     const scriptResult = type === 'url' || type === 'topic' 
       ? await generateScript({ content, type })
       : { title: 'AI Video', script: content, hashtags: [] as string[] }
 
     // Step 2: Generate Voiceover  
-    const voiceUrl = await generateVoiceover(scriptResult.script, voiceId || 'rachel')
+    const voiceUrl = await generateVoiceover(scriptResult.script, voiceId || planFeatures.voices[0])
 
     // Step 3: Generate Video
     const video = await generateVideo({
@@ -46,7 +115,11 @@ export async function POST(req: NextRequest) {
         hashtags: scriptResult.hashtags,
         voiceUrl,
         videoUrl: video.url,
-        status: 'completed'
+        status: 'completed',
+        quality: videoQuality,
+        watermark: planFeatures.watermark,
+        creditsUsed: 1,
+        remainingCredits: availableCredits - 1
       }
     })
   } catch (error: any) {
