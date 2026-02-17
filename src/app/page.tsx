@@ -20,7 +20,12 @@ import {
   Youtube,
   Instagram,
   Mail,
-  Send
+  Send,
+  Twitch,
+  Gamepad2,
+  Cpu,
+  Layers,
+  Rocket
 } from 'lucide-react'
 
 export default function Home() {
@@ -30,125 +35,106 @@ export default function Home() {
   const features = [
     {
       icon: Wand2,
-      title: 'AI Script Generation',
-      description: 'ใส่ URL หรือ Topic แล้ว AI จะสร้าง Script ให้อัตโนมัติ'
+      title: 'AI Script',
+      description: 'สร้างสคริปต์อัตโนมัติจาก URL หรือหัวข้อ'
     },
     {
       icon: Mic,
       title: 'AI Voiceover',
-      description: 'เลือกเสียงพากย์ได้หลายภาษา รวมถึงภาษาไทย'
+      description: 'เสียงพากย์หลายภาษา รวมภาษาไทย'
     },
     {
       icon: Video,
-      title: 'AI Video Generation',
-      description: 'สร้างวิดีโอสวยๆ พร้อม Subtitle อัตโนมัติ'
+      title: 'AI Video',
+      description: 'สร้างวิดีโอคุณภาพสูงพร้อม Subtitle'
     },
     {
       icon: Download,
-      title: 'Export ทุก Platform',
-      description: 'รองรับ TikTok, YouTube Shorts, Instagram Reels'
+      title: 'Export',
+      description: 'รองรับ TikTok, YouTube, Instagram'
     }
   ]
 
   const pricingPlans = [
     {
-      name: 'ฟรี',
+      name: 'FREE',
       price: '0',
-      description: 'ลองใช้งาน',
+      description: 'สำหรับลองเล่น',
       features: [
         '3 shorts/เดือน',
         'มี Watermark',
-        'ความละเอียด 720p',
+        '720p Quality',
         'เสียงพื้นฐาน'
       ],
-      cta: 'เริ่มฟรี',
+      cta: 'START FREE',
       popular: false
     },
     {
-      name: 'Pro',
+      name: 'PRO',
       price: '499',
       description: 'สำหรับครีเอเตอร์',
       features: [
         '30 shorts/เดือน',
-        'ไม่มี Watermark',
-        'ความละเอียด 1080p HD',
-        'เสียง VIP 10+',
-        'ลิขสิทธิ์ใช้งาน',
-        'Support priority'
+        'No Watermark',
+        '1080p HD',
+        'VIP Voices 10+',
+        'Priority Support',
+        'Commercial License'
       ],
-      cta: 'สมัคร Pro',
+      cta: 'GO PRO',
       popular: true
     },
     {
-      name: 'Business',
+      name: 'STREAMER',
       price: '1,499',
-      description: 'สำหรับทีม',
+      description: 'สำหรับ Pro Creator',
       features: [
-        'Unlimited shorts',
-        'ความละเอียด 4K',
-        'เสียง Custom',
+        'UNLIMITED',
+        '4K Quality',
+        'Custom Voice',
         'API Access',
-        'Team management',
-        'Dedicated support'
+        'Team Features',
+        'Dedicated Support'
       ],
-      cta: 'สมัคร Business',
+      cta: 'GO STREAML',
       popular: false
     }
   ]
 
-  const testimonials = [
-    {
-      name: 'สมชาย วงศ์สกุล',
-      role: 'Content Creator',
-      avatar: 'ส',
-      content: 'ใช้ AI Shorts Generator แล้วทำวิดีโอเร็วขึ้น 10 เท่า! ตอนนี้มีเวลาทำคอนเทนต์มากขึ้น',
-      rating: 5
-    },
-    {
-      name: 'พิมพ์ชนก สุขสันติ',
-      role: 'Digital Marketer',
-      avatar: 'พ',
-      content: 'ลูกค้าติดใจมาก วิดีโอสวย คุณภาพดี ขายได้ง่าย',
-      rating: 5
-    },
-    {
-      name: 'ธนกฤต มหาวงศ์',
-      role: 'Small Business Owner',
-      avatar: 'ธ',
-      content: 'ธุรกิจเล็กๆ อย่างเราไม่มีทีมวิดีโอ ตอนนี้ทำเองได้เลย ประหยัดเงินไปเยอะ',
-      rating: 5
-    }
+  const stats = [
+    { label: 'TOTAL USERS', value: '10,000+' },
+    { label: 'VIDEOS MADE', value: '50,000+' },
+    { label: 'RATING', value: '4.9/5' }
   ]
 
   return (
-    <div className="min-h-screen bg-[#050507] bg-pattern noise-overlay">
+    <div className="min-h-screen bg-[#0a0a0f] bg-grid bg-particles scanlines">
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 glass">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0a0a0f]/90 backdrop-blur-md border-b border-[#2a2a3e]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <div className="flex items-center gap-2">
-              <div className="w-10 h-10 gradient-bg rounded-xl flex items-center justify-center">
-                <Sparkles className="w-6 h-6 text-white" />
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 gradient-gaming rounded-lg flex items-center justify-center">
+                <Gamepad2 className="w-6 h-6 text-black" />
               </div>
-              <span className="font-display font-bold text-xl gradient-text">AI Shorts</span>
+              <span className="font-bold text-xl text-[#00ff88] neon-text tracking-wider">AI SHORTS</span>
             </div>
             
             <div className="hidden md:flex items-center gap-8">
-              <a href="#features" className="text-gray-300 hover:text-white transition">ฟีเจอร์</a>
-              <a href="#pricing" className="text-gray-300 hover:text-white transition">ราคา</a>
-              <a href="#testimonials" className="text-gray-300 hover:text-white transition">รีวิว</a>
-              <a href="#faq" className="text-gray-300 hover:text-white transition">FAQ</a>
+              <a href="#features" className="text-gray-400 hover:text-[#00ff88] transition uppercase tracking-wider text-sm font-semibold">Features</a>
+              <a href="#pricing" className="text-gray-400 hover:text-[#00ff88] transition uppercase tracking-wider text-sm font-semibold">Pricing</a>
+              <a href="#testimonials" className="text-gray-400 hover:text-[#00ff88] transition uppercase tracking-wider text-sm font-semibold">Reviews</a>
             </div>
 
             <div className="hidden md:flex items-center gap-4">
-              <button className="text-gray-300 hover:text-white transition">เข้าสู่ระบบ</button>
-              <button className="gradient-bg px-5 py-2 rounded-lg font-medium hover:opacity-90 transition">
-                เริ่มใช้ฟรี
+              <button className="text-gray-400 hover:text-[#00ff88] transition uppercase text-sm font-semibold tracking-wider">Login</button>
+              <button className="gaming-btn px-5 py-2 rounded-lg font-bold tracking-wider text-sm">
+                START NOW
               </button>
             </div>
 
             <button 
-              className="md:hidden"
+              className="md:hidden text-white"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
               {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -158,13 +144,13 @@ export default function Home() {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden glass border-t border-white/10">
+          <div className="md:hidden bg-[#12121a] border-t border-[#2a2a3e]">
             <div className="px-4 py-4 space-y-3">
-              <a href="#features" className="block text-gray-300 hover:text-white">ฟีเจอร์</a>
-              <a href="#pricing" className="block text-gray-300 hover:text-white">ราคา</a>
-              <a href="#testimonials" className="block text-gray-300 hover:text-white">รีวิว</a>
-              <button className="w-full gradient-bg px-5 py-2 rounded-lg font-medium">
-                เริ่มใช้ฟรี
+              <a href="#features" className="block text-gray-400 hover:text-[#00ff88] uppercase tracking-wider text-sm font-semibold">Features</a>
+              <a href="#pricing" className="block text-gray-400 hover:text-[#00ff88] uppercase tracking-wider text-sm font-semibold">Pricing</a>
+              <a href="#testimonials" className="block text-gray-400 hover:text-[#00ff88] uppercase tracking-wider text-sm font-semibold">Reviews</a>
+              <button className="w-full gaming-btn px-5 py-2 rounded-lg font-bold tracking-wider text-sm">
+                START NOW
               </button>
             </div>
           </div>
@@ -173,58 +159,63 @@ export default function Home() {
 
       {/* Hero Section */}
       <section className="pt-32 pb-20 px-4 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-primary/20 via-transparent to-transparent" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[120px]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#00ff88]/5 via-transparent to-transparent" />
         
         <div className="max-w-7xl mx-auto relative">
           <div className="text-center max-w-4xl mx-auto">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-6">
-              <Zap className="w-4 h-4 text-yellow-400" />
-              <span className="text-sm text-gray-300">สร้างวิดีโอสั้นใน 3 นาที</span>
+            {/* Live Badge */}
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#ff00aa]/20 border border-[#ff00aa] mb-6">
+              <span className="w-2 h-2 bg-[#ff00aa] rounded-full live-indicator"></span>
+              <span className="text-[#ff00aa] text-sm font-bold tracking-wider uppercase">Live Generator</span>
             </div>
             
-            <h1 className="font-display text-5xl md:text-7xl font-bold mb-6 leading-tight">
-              <span className="gradient-text">AI Shorts</span> Generator
+            <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight tracking-tight">
+              <span className="text-[#00ff88] neon-text">AI SHORTS</span>
               <br />
-              <span className="text-white">สร้างวิดีโอ viral ในไม่กี่คลิก</span>
+              <span className="text-white">GENERATOR</span>
             </h1>
             
-            <p className="text-xl text-gray-400 mb-10 max-w-2xl mx-auto">
-              แปลงบทความ, URL หรือไอเดียของคุณให้เป็นวิดีโอสั้นสวยๆ 
-              พร้อมเสียงพากย์อัตโนมัติ เหมาะสำหรับ TikTok, YouTube Shorts และ Instagram Reels
+            <p className="text-xl text-gray-400 mb-10 max-w-2xl mx-auto leading-relaxed">
+              สร้างวิดีโอ viral ในไม่กี่คลิก 
+              แค่ใส่ URL หรือหัวข้อ AI จะสร้างทุกอย่างให้
             </p>
             
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <button className="gradient-bg px-8 py-4 rounded-xl font-semibold text-lg hover:opacity-90 transition flex items-center gap-2 glow">
-                <Play className="w-5 h-5" />
-                ลองใช้ฟรี
+              <button className="gaming-btn px-8 py-4 rounded-lg font-bold text-lg tracking-wider flex items-center gap-2">
+                <Rocket className="w-5 h-5" />
+                START FREE
               </button>
-              <button className="px-8 py-4 rounded-xl font-semibold text-lg border border-white/20 hover:bg-white/10 transition flex items-center gap-2">
-                <Video className="w-5 h-5" />
-                ดูตัวอย่าง
+              <button className="gaming-btn gaming-btn-pink px-8 py-4 rounded-lg font-bold text-lg tracking-wider flex items-center gap-2">
+                <Play className="w-5 h-5" />
+                WATCH DEMO
               </button>
             </div>
 
-            <div className="mt-12 flex items-center justify-center gap-8 text-gray-500">
-              <div className="flex items-center gap-2">
-                <Users className="w-5 h-5" />
-                <span>10,000+ ผู้ใช้งาน</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Star className="w-5 h-5 text-yellow-400" />
-                <span>4.9/5 rating</span>
-              </div>
+            {/* Stats */}
+            <div className="mt-12 flex items-center justify-center gap-8">
+              {stats.map((stat, index) => (
+                <div key={index} className="text-center">
+                  <div className="text-2xl font-bold text-[#00ffff] neon-cyan">{stat.value}</div>
+                  <div className="text-xs text-gray-500 uppercase tracking-wider">{stat.label}</div>
+                </div>
+              ))}
             </div>
           </div>
 
           {/* Demo Preview */}
           <div className="mt-20 relative">
             <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0f] via-transparent to-transparent z-10" />
-            <div className="glass rounded-2xl p-2 glow max-w-3xl mx-auto">
-              <div className="bg-black rounded-xl aspect-video flex items-center justify-center">
+            <div className="gaming-card rounded-2xl p-1 max-w-3xl mx-auto">
+              <div className="bg-black rounded-xl aspect-video flex items-center justify-center relative overflow-hidden">
+                {/* Corner decorations */}
+                <div className="absolute top-4 left-4 w-4 h-4 border-t-2 border-l-2 border-[#00ff88]"></div>
+                <div className="absolute top-4 right-4 w-4 h-4 border-t-2 border-r-2 border-[#00ff88]"></div>
+                <div className="absolute bottom-4 left-4 w-4 h-4 border-b-2 border-l-2 border-[#00ff88]"></div>
+                <div className="absolute bottom-4 right-4 w-4 h-4 border-b-2 border-r-2 border-[#00ff88]"></div>
+                
                 <div className="text-center">
-                  <Play className="w-20 h-20 text-white/50 mx-auto mb-4" />
-                  <p className="text-gray-500">Preview วิดีโอที่สร้าง</p>
+                  <Play className="w-20 h-20 text-[#00ff88]/50 mx-auto mb-4" />
+                  <p className="text-gray-500 uppercase tracking-wider">Preview Area</p>
                 </div>
               </div>
             </div>
@@ -236,24 +227,22 @@ export default function Home() {
       <section id="features" className="py-20 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="font-display text-4xl font-bold mb-4">
-              ฟีเจอร์ <span className="gradient-text">ครบวงจร</span>
+            <h2 className="text-4xl font-bold mb-4">
+              <span className="text-[#00ff88] neon-text">FEATURES</span>
             </h2>
-            <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-              ทุกอย่างที่คุณต้องการเพื่อสร้างวิดีโอสั้นคุณภาพสูง
-            </p>
+            <p className="text-gray-400 text-lg">เครื่องมือครบวงจรสำหรับ Content Creator</p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {features.map((feature, index) => (
               <div 
                 key={index}
-                className="glass rounded-2xl p-6 hover:border-primary/50 transition group"
+                className="gaming-card rounded-2xl p-6 group"
               >
-                <div className="w-14 h-14 gradient-bg rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition">
-                  <feature.icon className="w-7 h-7 text-white" />
+                <div className="w-14 h-14 gradient-gaming rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition">
+                  <feature.icon className="w-7 h-7 text-black" />
                 </div>
-                <h3 className="font-semibold text-lg mb-2">{feature.title}</h3>
+                <h3 className="font-bold text-lg mb-2 text-white uppercase tracking-wider">{feature.title}</h3>
                 <p className="text-gray-400 text-sm">{feature.description}</p>
               </div>
             ))}
@@ -262,31 +251,30 @@ export default function Home() {
       </section>
 
       {/* How It Works */}
-      <section className="py-20 px-4">
+      <section className="py-20 px-4 bg-[#12121a]">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="font-display text-4xl font-bold mb-4">
-              ขั้นตอน <span className="gradient-text">ง่ายๆ</span>
+            <h2 className="text-4xl font-bold mb-4">
+              <span className="text-[#00ffff] neon-cyan">HOW IT WORKS</span>
             </h2>
-            <p className="text-gray-400 text-lg">ใช้งานได้ใน 3 ขั้นตอน</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
             {[
-              { step: '1', title: 'ใส่เนื้อหา', desc: 'วาง URL, บทความ หรือเขียน Script' },
-              { step: '2', title: 'AI สร้างวิดีโอ', desc: 'AI จะสร้าง Script, เสียง และวิดีโอ' },
-              { step: '3', title: 'ดาวน์โหลด', desc: 'Export ไปใช้งานได้เลย' }
+              { step: '01', title: 'INPUT', desc: 'ใส่ URL หรือหัวข้อ' },
+              { step: '02', title: 'GENERATE', desc: 'AI สร้างวิดีโอให้' },
+              { step: '03', title: 'EXPORT', desc: 'ดาวน์โหลดไปใช้ได้เลย' }
             ].map((item, index) => (
               <div key={index} className="relative">
-                <div className="glass rounded-2xl p-8 text-center">
-                  <div className="w-12 h-12 gradient-bg rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">
+                <div className="gaming-card rounded-2xl p-8 text-center">
+                  <div className="text-4xl font-bold text-[#00ff88] neon-text mb-4 font-pixel text-xs">
                     {item.step}
                   </div>
-                  <h3 className="font-semibold text-xl mb-2">{item.title}</h3>
+                  <h3 className="font-bold text-xl mb-2 text-white uppercase tracking-wider">{item.title}</h3>
                   <p className="text-gray-400">{item.desc}</p>
                 </div>
                 {index < 2 && (
-                  <ChevronRight className="hidden md:block absolute -right-4 top-1/2 -translate-y-1/2 text-gray-600 w-8 h-8" />
+                  <ChevronRight className="hidden md:block absolute -right-4 top-1/2 -translate-y-1/2 text-[#00ff88] w-8 h-8" />
                 )}
               </div>
             ))}
@@ -298,8 +286,8 @@ export default function Home() {
       <section id="pricing" className="py-20 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="font-display text-4xl font-bold mb-4">
-              เลือก <span className="gradient-text">แพ็กเกจ</span>
+            <h2 className="text-4xl font-bold mb-4">
+              <span className="text-[#ff00aa] neon-pink">CHOOSE YOUR PLAN</span>
             </h2>
             <p className="text-gray-400 text-lg">เริ่มต้นฟรี ไม่ต้องใส่บัตรเครดิต</p>
           </div>
@@ -308,38 +296,32 @@ export default function Home() {
             {pricingPlans.map((plan, index) => (
               <div 
                 key={index}
-                className={`glass rounded-2xl p-8 relative ${
-                  plan.popular ? 'border-primary glow' : ''
-                }`}
+                className={`gaming-card rounded-2xl p-8 relative ${plan.popular ? 'border-[#00ff88]' : ''}`}
               >
                 {plan.popular && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 gradient-bg px-4 py-1 rounded-full text-sm font-medium">
-                    แนะนำ
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 gradient-gaming px-4 py-1 rounded-full text-xs font-bold text-black uppercase tracking-wider">
+                    Most Popular
                   </div>
                 )}
                 
-                <h3 className="font-semibold text-xl mb-2">{plan.name}</h3>
+                <h3 className="font-bold text-xl mb-2 text-white uppercase tracking-wider">{plan.name}</h3>
                 <div className="mb-4">
-                  <span className="text-4xl font-bold">{plan.price}</span>
-                  <span className="text-gray-400"> บาท/เดือน</span>
+                  <span className="text-4xl font-bold text-[#00ffff] neon-cyan">{plan.price}</span>
+                  <span className="text-gray-400"> ฿/เดือน</span>
                 </div>
                 <p className="text-gray-400 text-sm mb-6">{plan.description}</p>
 
                 <ul className="space-y-3 mb-8">
                   {plan.features.map((feature, i) => (
                     <li key={i} className="flex items-center gap-2 text-sm">
-                      <Check className="w-4 h-4 text-green-400" />
-                      <span>{feature}</span>
+                      <Check className="w-4 h-4 text-[#00ff88]" />
+                      <span className="text-gray-300">{feature}</span>
                     </li>
                   ))}
                 </ul>
 
                 <button 
-                  className={`w-full py-3 rounded-lg font-medium transition ${
-                    plan.popular 
-                      ? 'gradient-bg hover:opacity-90' 
-                      : 'border border-white/20 hover:bg-white/10'
-                  }`}
+                  className={`w-full py-3 rounded-lg font-bold uppercase tracking-wider transition ${plan.popular ? 'gaming-btn' : 'gaming-btn gaming-btn-pink'}`}
                 >
                   {plan.cta}
                 </button>
@@ -349,62 +331,30 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section id="testimonials" className="py-20 px-4">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="font-display text-4xl font-bold mb-4">
-              ความ <span className="gradient-text">พอใจ</span> ของผู้ใช้
-            </h2>
-            <p className="text-gray-400 text-lg">เสียงตอบรับจากผู้ใช้งานจริง</p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <div key={index} className="glass rounded-2xl p-6">
-                <div className="flex items-center gap-1 mb-4">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 text-yellow-400 fill-yellow-400" />
-                  ))}
-                </div>
-                <p className="text-gray-300 mb-4">"{testimonial.content}"</p>
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 gradient-bg rounded-full flex items-center justify-center font-medium">
-                    {testimonial.avatar}
-                  </div>
-                  <div>
-                    <p className="font-medium">{testimonial.name}</p>
-                    <p className="text-sm text-gray-400">{testimonial.role}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* CTA Section */}
       <section className="py-20 px-4">
-        <div className="max-w-4xl mx-auto glass rounded-3xl p-12 text-center relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-secondary/20" />
+        <div className="max-w-4xl mx-auto gaming-card rounded-3xl p-12 text-center relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-[#00ff88]/10 via-transparent to-[#ff00aa]/10" />
           <div className="relative">
-            <h2 className="font-display text-4xl font-bold mb-4">
-              พร้อมสร้างวิดีโอแล้วหรือยัง?
+            <h2 className="text-4xl font-bold mb-4">
+              <span className="text-white">READY TO</span>
+              <br />
+              <span className="text-[#00ff88] neon-text">LEVEL UP?</span>
             </h2>
             <p className="text-gray-400 text-lg mb-8">
-              เริ่มใช้งานฟรีวันนี้ ไม่ต้องใส่บัตรเครดิต
+              เริ่มใช้งานฟรีวันนี้
             </p>
             
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto">
               <input 
                 type="email" 
-                placeholder="อีเมลของคุณ"
+                placeholder="YOUR EMAIL"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="flex-1 px-5 py-3 rounded-lg bg-white/5 border border-white/10 focus:border-primary focus:outline-none transition"
+                className="flex-1 px-5 py-3 rounded-lg bg-[#0a0a0f] border border-[#2a2a3e] focus:border-[#00ff88] focus:outline-none transition text-center uppercase tracking-wider"
               />
-              <button className="gradient-bg px-8 py-3 rounded-lg font-medium hover:opacity-90 transition whitespace-nowrap">
-                เริ่มฟรี
+              <button className="gaming-btn px-8 py-3 rounded-lg font-bold uppercase tracking-wider whitespace-nowrap">
+                GET STARTED
               </button>
             </div>
           </div>
@@ -412,70 +362,60 @@ export default function Home() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-16 px-4">
+      <section id="contact" className="py-16 px-4 border-t border-[#2a2a3e]">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="font-display text-3xl font-bold mb-8">
-            <span className="gradient-text">ติดต่อเรา</span>
+          <h2 className="text-3xl font-bold mb-8">
+            <span className="text-[#00ffff] neon-cyan">CONNECT</span>
           </h2>
-          <div className="flex flex-wrap justify-center gap-6">
+          <div className="flex flex-wrap justify-center gap-4">
             <a 
               href="mailto:desanrong.sm@gmail.com"
-              className="flex items-center gap-2 px-6 py-3 rounded-xl glass hover:border-primary/50 transition"
+              className="flex items-center gap-2 px-6 py-3 rounded-xl gaming-card hover:border-[#00ff88] transition"
             >
-              <Mail className="w-5 h-5 text-primary" />
-              <span>desanrong.sm@gmail.com</span>
+              <Mail className="w-5 h-5 text-[#00ff88]" />
+              <span>Email</span>
             </a>
             <a 
               href="https://discord.gg/dekcomzat"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 px-6 py-3 rounded-xl glass hover:border-primary/50 transition"
+              className="flex items-center gap-2 px-6 py-3 rounded-xl gaming-card hover:border-[#5865F2] transition"
             >
               <Send className="w-5 h-5 text-[#5865F2]" />
-              <span>dekcomzat</span>
+              <span>Discord</span>
             </a>
             <a 
               href="https://line.me/R/ti/p/@dekcomzat"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 px-6 py-3 rounded-xl glass hover:border-primary/50 transition"
+              className="flex items-center gap-2 px-6 py-3 rounded-xl gaming-card hover:border-[#06B518] transition"
             >
               <span className="text-[#06B518] font-bold">LINE</span>
-              <span>dekcomzat</span>
-            </a>
-            <a 
-              href="https://t.me/desnarong"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 px-6 py-3 rounded-xl glass hover:border-primary/50 transition"
-            >
-              <span className="text-[#26A5E4] font-bold">Telegram</span>
-              <span>@desnarong</span>
             </a>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="py-8 px-4 border-t border-white/10">
+      <footer className="py-8 px-4 border-t border-[#2a2a3e]">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 gradient-bg rounded-lg flex items-center justify-center">
-                <Sparkles className="w-4 h-4 text-white" />
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 gradient-gaming rounded-lg flex items-center justify-center">
+                <Gamepad2 className="w-4 h-4 text-black" />
               </div>
-              <span className="font-display font-bold gradient-text">AI Shorts</span>
+              <span className="font-bold text-[#00ff88] neon-text tracking-wider">AI SHORTS</span>
             </div>
             
-            <div className="flex items-center gap-6 text-sm text-gray-400">
-              <a href="#" className="hover:text-white transition">นโยบายความเป็นส่วนตัว</a>
-              <a href="#" className="hover:text-white transition">ข้อกำหนดการใช้งาน</a>
-              <a href="#contact" className="hover:text-white transition">ติดต่อเรา</a>
+            <div className="flex items-center gap-6 text-sm text-gray-500 uppercase tracking-wider">
+              <a href="#" className="hover:text-[#00ff88] transition">Privacy</a>
+              <a href="#" className="hover:text-[#00ff88] transition">Terms</a>
+              <a href="#contact" className="hover:text-[#00ff88] transition">Contact</a>
             </div>
           </div>
           
-          <div className="mt-6 text-center text-gray-500 text-sm">
-            © 2026 AI Shorts Generator. All rights reserved.
+          <div className="mt-6 text-center text-gray-600 text-sm uppercase tracking-wider">
+            © 2026 AI SHORTS GENERATOR. ALL RIGHTS RESERVED.
           </div>
         </div>
       </footer>
