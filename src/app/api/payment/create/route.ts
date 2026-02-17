@@ -1,46 +1,52 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createPayment, PLANS } from '@/lib/payment/promptpay'
-
-export const dynamic = 'force-dynamic'
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
-    const { plan, userId } = body
+    const { amount, userId, plan } = body
 
-    // Validate plan
-    if (!plan || !PLANS[plan as keyof typeof PLANS]) {
+    if (!amount || !userId) {
       return NextResponse.json(
-        { error: 'Invalid plan. Choose pro or business' },
+        { error: 'Missing required fields' },
         { status: 400 }
       )
     }
 
-    // Get IP address for tracking
-    const ipAddress = req.headers.get('x-forwarded-for') || 
-                      req.headers.get('x-real-ip') || 
-                      'unknown'
-
-    // Create payment
-    const payment = await createPayment(
-      plan as 'pro' | 'business',
+    // Generate payment ID
+    const paymentId = crypto.randomUUID()
+    
+    // Generate PromptPay QR code URL
+    // In production, you'd use a real PromptPay API
+    const promptpayNumber = process.env.PROMPTPAY_NUMBER || '0812345678'
+    
+    // Create QR payment URL (mock)
+    const qrCodeUrl = `https://promptpay.io/${promptpayNumber}/${amount}.png`
+    
+    // Create payment record (in production, save to database)
+    const payment = {
+      id: paymentId,
+      amount,
       userId,
-      ipAddress
-    )
+      plan: plan || 'credit',
+      status: 'pending',
+      promptpayNumber,
+      qrCodeUrl,
+      createdAt: new Date().toISOString(),
+      expiresAt: new Date(Date.now() + 15 * 60 * 1000).toISOString() // 15 minutes
+    }
 
     return NextResponse.json({
       success: true,
       payment: {
         id: payment.id,
         amount: payment.amount,
-        refNo: payment.refNo,
+        promptpayNumber: payment.promptpayNumber,
         qrCodeUrl: payment.qrCodeUrl,
-        expiresAt: payment.expiresAt,
-        plan: payment.plan
+        expiresAt: payment.expiresAt
       }
     })
   } catch (error) {
-    console.error('Create payment error:', error)
+    console.error('Payment create error:', error)
     return NextResponse.json(
       { error: 'Failed to create payment' },
       { status: 500 }
