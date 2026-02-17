@@ -78,7 +78,7 @@ function generatePromptPayPayload(phoneNumber: string, amount: number, refNo: st
   const cleanPhone = phoneNumber.replace(/\D/g, '')
   
   // Build QR payload
-  const fields = [
+  const fields: string[] = [
     '000201', // Payment network
     `01${cleanPhone.length.toString().padStart(2, '0')}${cleanPhone}`, // Merchant ID (phone)
     `5303694`, // Currency (THB - 764)
