@@ -35,6 +35,13 @@ export default function Home() {
       popular: false,
     },
     {
+      name: 'Starter',
+      price: '199',
+      desc: 'สำหรับเริ่มต้น',
+      features: ['10 shorts/เดือน', 'ไม่มี Watermark', '720p HD', 'เสียง 5 แบบ'],
+      popular: false,
+    },
+    {
       name: 'Pro',
       price: '499',
       desc: 'สำหรับครีเอเตอร์',
@@ -220,7 +227,7 @@ export default function Home() {
             <p className="text-zinc-400 text-lg">เริ่มต้นฟรี ไม่ต้องใส่บัตร</p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {pricingPlans.map((plan, i) => (
               <div key={i} className={`card p-8 ${plan.popular ? 'border-[#22c55e] relative' : ''}`}>
                 {plan.popular && (

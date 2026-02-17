@@ -392,8 +392,22 @@ export default function Dashboard() {
                 แพลน Premium
               </h3>
               
-              <div className="grid md:grid-cols-2 gap-6">
+              <div className="grid md:grid-cols-3 gap-6">
                 <div className="bg-zinc-900 rounded-xl p-6 border border-zinc-800">
+                  <div className="flex items-center justify-between mb-4">
+                    <h4 className="font-bold text-lg">Starter</h4>
+                    <span className="text-2xl font-bold">฿199<span className="text-zinc-500 text-sm">/เดือน</span></span>
+                  </div>
+                  <ul className="space-y-2 text-zinc-400 text-sm mb-6">
+                    <li>• 10 shorts/เดือน</li>
+                    <li>• ไม่มี Watermark</li>
+                    <li>• คุณภาพ 720p</li>
+                    <li>• เสียง 5 แบบ</li>
+                  </ul>
+                  <button className="w-full btn-outline py-3">อัพเกรด</button>
+                </div>
+
+                <div className="bg-zinc-900 rounded-xl p-6 border border-[#22c55e]">
                   <div className="flex items-center justify-between mb-4">
                     <h4 className="font-bold text-lg">Pro</h4>
                     <span className="text-2xl font-bold">฿499<span className="text-zinc-500 text-sm">/เดือน</span></span>
@@ -404,10 +418,10 @@ export default function Dashboard() {
                     <li>• คุณภาพ 1080p</li>
                     <li>• เสียง VIP 10+</li>
                   </ul>
-                  <button className="w-full btn-outline py-3">อัพเกรด</button>
+                  <button className="w-full btn-primary py-3">อัพเกรด</button>
                 </div>
 
-                <div className="bg-zinc-900 rounded-xl p-6 border border-[#22c55e]">
+                <div className="bg-zinc-900 rounded-xl p-6 border border-zinc-800">
                   <div className="flex items-center justify-between mb-4">
                     <h4 className="font-bold text-lg">Business</h4>
                     <span className="text-2xl font-bold">฿1,499<span className="text-zinc-500 text-sm">/เดือน</span></span>
@@ -418,7 +432,7 @@ export default function Dashboard() {
                     <li>• API Access</li>
                     <li>• Support 24/7</li>
                   </ul>
-                  <button className="w-full btn-primary py-3">อัพเกรด</button>
+                  <button className="w-full btn-outline py-3">อัพเกรด</button>
                 </div>
               </div>
             </div>
