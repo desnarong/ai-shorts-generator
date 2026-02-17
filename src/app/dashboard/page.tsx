@@ -47,19 +47,37 @@ export default function Dashboard() {
     if (!content.trim()) return
     setGenerating(true)
     
-    // Simulate generation
-    setTimeout(() => {
-      setVideos(prev => [{
-        id: String(Date.now()),
-        title: 'วิดีโอใหม่',
-        status: 'completed',
-        createdAt: new Date().toISOString().split('T')[0],
-        thumbnail: null,
-        duration: '0:30'
-      }, ...prev])
+    try {
+      const response = await fetch('/api/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: contentType,
+          content,
+          platform,
+          voiceId: voice,
+          userId: 'demo'
+        })
+      })
+      
+      const data = await response.json()
+      
+      if (data.success) {
+        setVideos(prev => [{
+          id: String(Date.now()),
+          title: data.video.title || 'วิดีโอใหม่',
+          status: 'completed',
+          createdAt: new Date().toISOString().split('T')[0],
+          thumbnail: null,
+          duration: '0:30'
+        }, ...prev])
+        setContent('')
+      }
+    } catch (error) {
+      console.error('Generation error:', error)
+    } finally {
       setGenerating(false)
-      setContent('')
-    }, 3000)
+    }
   }
 
   const tabs = [
