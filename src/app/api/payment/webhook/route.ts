@@ -4,6 +4,8 @@ import { processSmsNotification } from '@/lib/payment/sms-parser'
 // This webhook receives SMS notifications from your SMS forwarding service
 // You need to set up SMS forwarding from your phone to this endpoint
 
+export const dynamic = 'force-dynamic'
+
 export async function POST(req: NextRequest) {
   try {
     // Verify webhook secret

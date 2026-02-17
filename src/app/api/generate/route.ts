@@ -4,6 +4,8 @@ import { generateVoiceover } from '@/lib/ai/voiceover'
 import { generateVideo } from '@/lib/ai/video'
 import { db } from '@/lib/prisma'
 
+export const dynamic = 'force-dynamic'
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
