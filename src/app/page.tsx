@@ -44,8 +44,8 @@ export default function Home() {
       <nav className="glass fixed top-0 left-0 right-0 z-50">
         <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-[#6366f1] to-[#a855f7] rounded-xl flex items-center justify-center animate-pulse-glow">
-              <Zap className="w-5 h-5 text-white" />
+            <div className="w-10 h-10 bg-gradient-to-br from-[#00ff88] to-[#00cc6a] rounded-xl flex items-center justify-center animate-pulse-glow">
+              <Zap className="w-5 h-5 text-black" />
             </div>
             <span className="font-bold text-xl">AI Shorts</span>
           </div>
@@ -80,8 +80,8 @@ export default function Home() {
       {/* Hero */}
       <section className="pt-32 pb-20 px-4">
         <div className="max-w-4xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#6366f1]/10 border border-[#6366f1]/30 mb-8 animate-fade-in">
-            <span className="w-2 h-2 bg-[#6366f1] rounded-full animate-pulse"></span>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#00ff88]/10 border border-[#00ff88]/30 mb-8 animate-fade-in">
+            <span className="w-2 h-2 bg-[#00ff88] rounded-full animate-pulse"></span>
             <span className="text-sm text-[#a1a1aa]">AI-Powered Video Generator</span>
           </div>
           
@@ -119,8 +119,8 @@ export default function Home() {
                 key={index} 
                 className={`card p-8 text-center hover-lift animate-fade-in animate-delay-${index + 2}`}
               >
-                <div className="w-16 h-16 bg-gradient-to-br from-[#6366f1] to-[#a855f7] rounded-2xl flex items-center justify-center mx-auto mb-4 icon-hover">
-                  <feature.icon className="w-8 h-8 text-white" />
+                <div className="w-16 h-16 bg-gradient-to-br from-[#00ff88] to-[#00cc6a] rounded-2xl flex items-center justify-center mx-auto mb-4 icon-hover">
+                  <feature.icon className="w-8 h-8 text-black" />
                 </div>
                 <h3 className="font-bold text-xl mb-2">{feature.title}</h3>
                 <p className="text-[#a1a1aa]">{feature.description}</p>
@@ -143,7 +143,7 @@ export default function Home() {
                 className={`card p-8 ${plan.popular ? 'gradient-border' : ''} hover-lift`}
               >
                 {plan.popular && (
-                  <div className="bg-gradient-to-r from-[#6366f1] to-[#a855f7] text-white text-xs font-bold px-3 py-1 rounded-full inline-block mb-4">
+                  <div className="bg-gradient-to-r from-[#00ff88] to-[#00cc6a] text-black text-xs font-bold px-3 py-1 rounded-full inline-block mb-4">
                     Popular
                   </div>
                 )}
@@ -197,8 +197,8 @@ export default function Home() {
       <footer className="py-8 px-4 border-t border-[#27272a]">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-[#6366f1] to-[#a855f7] rounded-lg flex items-center justify-center">
-              <Zap className="w-4 h-4 text-white" />
+            <div className="w-8 h-8 bg-gradient-to-br from-[#00ff88] to-[#00cc6a] rounded-lg flex items-center justify-center">
+              <Zap className="w-4 h-4 text-black" />
             </div>
             <span className="font-bold">AI Shorts</span>
           </div>

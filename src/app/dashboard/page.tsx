@@ -57,8 +57,8 @@ export default function Dashboard() {
       <header className="glass sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
           <a href="/" className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-[#6366f1] to-[#a855f7] rounded-xl flex items-center justify-center animate-pulse-glow">
-              <Zap className="w-5 h-5 text-white" />
+            <div className="w-10 h-10 bg-gradient-to-br from-[#00ff88] to-[#00cc6a] rounded-xl flex items-center justify-center animate-pulse-glow">
+              <Zap className="w-5 h-5 text-black" />
             </div>
             <span className="font-bold">AI Shorts</span>
           </a>

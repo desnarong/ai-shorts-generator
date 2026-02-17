@@ -55,8 +55,8 @@ export default function LoginPage() {
         {/* Logo */}
         <div className="text-center mb-8 animate-fade-in">
           <a href="/" className="inline-flex items-center gap-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-[#6366f1] to-[#a855f7] rounded-xl flex items-center justify-center animate-pulse-glow">
-              <Zap className="w-6 h-6 text-white" />
+            <div className="w-12 h-12 bg-gradient-to-br from-[#00ff88] to-[#00cc6a] rounded-xl flex items-center justify-center animate-pulse-glow">
+              <Zap className="w-6 h-6 text-black" />
             </div>
             <span className="font-bold text-xl">AI Shorts</span>
           </a>

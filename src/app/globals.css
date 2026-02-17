@@ -8,9 +8,9 @@
   --bg-card: #1f1f2a;
   --text-primary: #ffffff;
   --text-secondary: #a1a1aa;
-  --accent: #6366f1;
-  --accent-hover: #818cf8;
-  --accent-glow: rgba(99, 102, 241, 0.4);
+  --accent: #00ff88;
+  --accent-hover: #00cc6a;
+  --accent-glow: rgba(0, 255, 136, 0.4);
   --border: #27272a;
   --success: #10b981;
 }
@@ -30,8 +30,8 @@ body {
 /* Animated gradient background */
 .gradient-bg {
   background: 
-    radial-gradient(ellipse at 20% 0%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 100%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 20% 0%, rgba(0, 255, 136, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 100%, rgba(0, 255, 255, 0.1) 0%, transparent 50%),
     var(--bg-primary);
 }
 
@@ -67,7 +67,7 @@ body {
 }
 
 .card:hover {
-  border-color: rgba(99, 102, 241, 0.5);
+  border-color: rgba(0, 255, 136, 0.5);
   transform: translateY(-2px);
   box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
 }
@@ -82,7 +82,7 @@ body {
   position: absolute;
   inset: 0;
   padding: 1px;
-  background: linear-gradient(135deg, #6366f1, #8b5cf6, #a855f7);
+  background: linear-gradient(135deg, #00ff88, #00ffff, #00cc6a);
   border-radius: inherit;
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
