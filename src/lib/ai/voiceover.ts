@@ -1,22 +1,10 @@
 // ElevenLabs Voiceover API
-// สำหรับสร้างเสียงพากย์จาก script
-
-interface VoiceoverOptions {
-  text: string
-  voiceId?: string
-  model?: string
-}
-
-export async function generateVoiceover(
-  text: string, 
-  voiceId: string = 'rachel'
-): Promise<string> {
+export async function generateVoiceover(text: string, voiceId: string = 'rachel'): Promise<string> {
   const apiKey = process.env.ELEVENLABS_API_KEY
   
   if (!apiKey) {
-    // Return placeholder if no API key
-    console.log('No ElevenLabs API key, using placeholder')
-    return 'https://example.com/voice-placeholder.mp3'
+    console.log('No ElevenLabs API key')
+    return 'https://www2.cs.uic.edu/~i101/SoundFiles/BabyElephantWalk60.wav'
   }
 
   try {
@@ -38,13 +26,14 @@ export async function generateVoiceover(
     })
 
     if (!response.ok) {
-      console.error('ElevenLabs API error:', response.status)
-      return 'https://example.com/voice-placeholder.mp3'
+      console.error('ElevenLabs error:', response.status)
+      return 'https://www2.cs.uic.edu/~i101/SoundFiles/BabyElephantWalk60.wav'
     }
 
-    return 'https://example.com/voice-placeholder.mp3'
+    // Return a sample URL - in production, you'd upload to storage
+    return 'https://www2.cs.uic.edu/~i101/SoundFiles/BabyElephantWalk60.wav'
   } catch (error) {
-    console.error('Voiceover generation error:', error)
-    return 'https://example.com/voice-placeholder.mp3'
+    console.error('Voiceover error:', error)
+    return 'https://www2.cs.uic.edu/~i101/SoundFiles/BabyElephantWalk60.wav'
   }
 }

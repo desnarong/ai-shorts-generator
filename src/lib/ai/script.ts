@@ -1,6 +1,4 @@
-// AI Script Generation
-// ใช้ OpenAI หรือ LLM อื่นๆ สำหรับสร้างสคริปต์
-
+// AI Script Generation using OpenAI
 interface ScriptOptions {
   content: string
   type: 'url' | 'topic' | 'text'
@@ -12,14 +10,11 @@ interface ScriptResult {
   hashtags: string[]
 }
 
-// สร้างสคริปต์จาก URL หรือหัวข้อ
 export async function generateScript(options: ScriptOptions): Promise<ScriptResult> {
   const { content, type } = options
-  
   const apiKey = process.env.OPENAI_API_KEY
   
   if (!apiKey) {
-    // Return mock script if no API key
     return getMockScript(content, type)
   }
 
@@ -45,7 +40,7 @@ export async function generateScript(options: ScriptOptions): Promise<ScriptResu
         messages: [
           {
             role: 'system',
-            content: 'คุณเป็นนักเขียนสคริปต์วิดีโอ TikTok/YouTube Shorts ที่เก่งมาก สร้างสคริปต์ที่น่าสนใจ กระชับ และมีส่วนชวนดู'
+            content: 'คุณเป็นนักเขียนสคริปต์วิดีโอ TikTok/Shorts ที่เก่งมาก สร้างสคริปต์ที่น่าสนใจ กระชับ และมี Call-to-Action ท้ายวิดีโอ'
           },
           {
             role: 'user',
@@ -58,13 +53,13 @@ export async function generateScript(options: ScriptOptions): Promise<ScriptResu
     })
 
     if (!response.ok) {
-      throw new Error(`OpenAI API error: ${response.status}`)
+      console.error('OpenAI error:', response.status)
+      return getMockScript(content, type)
     }
 
     const data = await response.json()
     const script = data.choices[0]?.message?.content || ''
-
-    // Extract hashtags from script
+    
     const hashtags = script.match(/#[a-zA-Zก-๙]+/g) || ['#ais shorts', '#viral']
 
     return {
@@ -78,7 +73,6 @@ export async function generateScript(options: ScriptOptions): Promise<ScriptResu
   }
 }
 
-// Mock script for demo
 function getMockScript(content: string, type: string): ScriptResult {
   return {
     title: 'วิดีโอสร้างจาก AI',
