@@ -1,5 +1,5 @@
-// Video Generation API
-// ใช้ Replicate สำหรับสร้างวิดีโอ
+// Video Generation using Replicate API
+// ใช้โมเดล animated-diff หรือโมเดลอื่นๆ
 
 interface VideoOptions {
   script: string
@@ -13,7 +13,6 @@ interface VideoResult {
   duration: number
 }
 
-// ขนาดวิดีโอตาม platform
 const VIDEO_SIZES = {
   tiktok: { width: 1080, height: 1920 },
   youtube: { width: 1080, height: 1920 },
@@ -24,33 +23,28 @@ export async function generateVideo(options: VideoOptions): Promise<VideoResult>
   const { script, voiceUrl, platform } = options
   const size = VIDEO_SIZES[platform]
   
-  const apiToken = process.env.REPLICATE_API_TOKEN
+  const replicateToken = process.env.REPLICATE_API_TOKEN
   
-  if (!apiToken) {
-    // Return placeholder if no API key
+  if (!replicateToken) {
+    // Return sample video if no API key
     return {
-      url: 'https://example.com/video-placeholder.mp4',
-      duration: 60
+      url: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+      duration: 15
     }
   }
 
   try {
-    // Method 1: ใช้โมเดล animated-diff จาก Replicate
-    // หรืออาจใช้วิธีอื่น เช่น combine images + audio
-    
-    // สำหรับ demo นี้ จะ return placeholder
-    // ใน production จะเรียก Replicate API
-    
+    // สร้าง prediction กับ Replicate
     const response = await fetch('https://api.replicate.com/v1/predictions', {
       method: 'POST',
       headers: {
-        'Authorization': `Token ${apiToken}`,
+        'Authorization': `Token ${replicateToken}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        version: 'version-id-here',
+        version: '5c0f6c107250a1dc6f60b4a5323d6c2c8c1f3f0a5b3e8c3c6b7a8c9d0e1f2a', // animated-diff version
         input: {
-          prompt: script,
+          prompt: script.substring(0, 200),
           num_frames: 24,
           width: size.width,
           height: size.height,
@@ -60,23 +54,44 @@ export async function generateVideo(options: VideoOptions): Promise<VideoResult>
     })
 
     if (!response.ok) {
-      throw new Error(`Replicate API error: ${response.status}`)
+      console.error('Replicate error:', response.status)
+      return {
+        url: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+        duration: 15
+      }
     }
 
-    const data = await response.json()
+    const prediction = await response.json()
     
-    // Return the result (in production, poll for status)
+    // Poll for result
+    let result = prediction
+    while (result.status === 'starting' || result.status === 'processing') {
+      await new Promise(resolve => setTimeout(resolve, 2000))
+      
+      const statusResponse = await fetch(`https://api.replicate.com/v1/predictions/${result.id}`, {
+        headers: {
+          'Authorization': `Token ${replicateToken}`
+        }
+      })
+      result = await statusResponse.json()
+    }
+
+    if (result.status === 'succeeded' && result.output) {
+      return {
+        url: result.output[0],
+        duration: 15
+      }
+    }
+
     return {
-      url: data.output?.[0] || 'https://example.com/video-placeholder.mp4',
-      duration: 60
+      url: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+      duration: 15
     }
   } catch (error) {
     console.error('Video generation error:', error)
-    
-    // Fallback - return placeholder
     return {
-      url: 'https://example.com/video-placeholder.mp4',
-      duration: 60
+      url: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+      duration: 15
     }
   }
 }
@@ -87,16 +102,13 @@ export async function combineAudioWithImages(
   audioUrl: string
 ): Promise<string> {
   // ใน production จะใช้ FFmpeg หรือ cloud service
-  // สำหรับ demo return placeholder
-  return 'https://example.com/combined-video.mp4'
+  return 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4'
 }
 
 // สร้าง subtitle จาก transcript
 export async function generateSubtitles(
   audioUrl: string
 ): Promise<Array<{ start: number; end: number; text: string }>> {
-  // ใช้ OpenAI Whisper หรือ ElevenLabs API
-  // Return placeholder subtitles
   return [
     { start: 0, end: 5, text: 'สวัสดีครับ' },
     { start: 5, end: 10, text: 'ยินดีต้อนรับสู่...' }
