@@ -134,7 +134,7 @@ export async function handleDiscordCommand(
         title: '💳 แพ็กเกจ Pro - 499 บาท',
         description: `สแกน QR Code เพื่อชำระเงิน\n**Ref:** \`${payment.refNo}\`\n**หมดอายุ:** ${payment.expiresAt.toLocaleString('th-TH')}`,
         color: 0x6366f1,
-        image: { url: payment.qrCodeUrl }
+        image: { url: payment.qrCodeUrl || '' }
       }
     }
   }
@@ -148,7 +148,7 @@ export async function handleDiscordCommand(
         title: '💳 แพ็กเกจ Business - 1,499 บาท',
         description: `สแกน QR Code เพื่อชำระเงิน\n**Ref:** \`${payment.refNo}\`\n**หมดอายุ:** ${payment.expiresAt.toLocaleString('th-TH')}`,
         color: 0x8b5cf6,
-        image: { url: payment.qrCodeUrl }
+        image: { url: payment.qrCodeUrl || '' }
       }
     }
   }
