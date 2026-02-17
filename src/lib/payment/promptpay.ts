@@ -76,22 +76,19 @@ function generateQRCodeUrl(phoneNumber: string, amount: number, refNo: string): 
 function generatePromptPayPayload(phoneNumber: string, amount: number, refNo: string): string {
   // Remove any non-digits from phone
   const cleanPhone = phoneNumber.replace(/\D/g, '')
+  const amountStr = amount.toFixed(2)
   
-  // Build QR payload
-  const fields: string[] = [
-    '000201', // Payment network
-    `01${cleanPhone.length.toString().padStart(2, '0')}${cleanPhone}`, // Merchant ID (phone)
-    `5303694`, // Currency (THB - 764)
-    `54${amount.toFixed(2).length.toString().padStart(2, '0')}${amount.toFixed(2)}`, // Amount
-    `5802TH`, // Country
-    `6304${calculateCRC4(payloadWithoutCRC())}` // CRC
-  ]
+  // Build QR payload parts (without CRC first)
+  const part1 = '000201'
+  const part2 = `01${cleanPhone.length.toString().padStart(2, '0')}${cleanPhone}`
+  const part3 = '5303694'
+  const part4 = `54${amountStr.length.toString().padStart(2, '0')}${amountStr}`
+  const part5 = '5802TH'
   
-  function payloadWithoutCRC() {
-    return fields.slice(0, -1).join('')
-  }
+  const payloadWithoutCRC = part1 + part2 + part3 + part4 + part5
+  const crc = calculateCRC4(payloadWithoutCRC)
   
-  return fields.join('')
+  return payloadWithoutCRC + `6304${crc}`
 }
 
 /**
