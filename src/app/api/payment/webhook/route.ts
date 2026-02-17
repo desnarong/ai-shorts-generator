@@ -41,10 +41,7 @@ export async function POST(req: NextRequest) {
     // Process the SMS
     const result = await processSmsNotification(message)
 
-    return NextResponse.json({
-      success: result.success,
-      ...result
-    })
+    return NextResponse.json(result)
   } catch (error) {
     console.error('Webhook error:', error)
     return NextResponse.json(
