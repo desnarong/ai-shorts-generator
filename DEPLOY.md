@@ -52,20 +52,19 @@ vercel env add SMS_WEBHOOK_SECRET
 vercel env add DISCORD_WEBHOOK_URL
 ```
 
-### 5. Database
+### 5. Database (สำคัญ!)
 
-สำหรับ Vercel ต้องใช้ **Neon** (Free PostgreSQL):
+Vercel ต้องใช้ **Neon** (Free PostgreSQL):
 
 ```bash
 # 1. ไปที่ https://neon.tech
-# 2. สร้าง project ใหม่
-# 3. Copy connection string
+# 2. สมัครและสร้าง project ใหม่
+# 3. Copy connection string (จะได้ประมาณ)
+#    postgresql://username:password@ep-xxx.us-east-1.aws.neon.tech/neondb?sslmode=require
 
-# แก้ไข .env
-DATABASE_URL="postgresql://user:password@host.neon.tech/db?sslmode=require"
-
-# Run migration
-npx prisma migrate deploy
+# 4. ไปที่ Vercel Dashboard > Your Project > Settings > Environment Variables
+# 5. เพิ่ม:
+#    DATABASE_URL = [connection string จากข้อ 3]
 ```
 
 ---
