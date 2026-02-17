@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Play, Check, ChevronRight, Video, Wand2, Download, Mail, Menu, X, Star, Zap } from 'lucide-react'
+import { Play, Check, Video, Wand2, Download, Menu, X, Zap, Sparkles, ArrowRight } from 'lucide-react'
 
 export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -39,24 +39,24 @@ export default function Home() {
   ]
 
   return (
-    <div className="min-h-screen bg-[#fafafa]">
+    <div className="min-h-screen gradient-bg dot-pattern">
       {/* Navigation */}
-      <nav className="navbar fixed top-0 left-0 right-0 z-50">
+      <nav className="glass fixed top-0 left-0 right-0 z-50">
         <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-[#2563eb] rounded-lg flex items-center justify-center">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-gradient-to-br from-[#6366f1] to-[#a855f7] rounded-xl flex items-center justify-center animate-pulse-glow">
               <Zap className="w-5 h-5 text-white" />
             </div>
-            <span className="font-semibold text-lg">AI Shorts</span>
+            <span className="font-bold text-xl">AI Shorts</span>
           </div>
           
           <div className="hidden md:flex items-center gap-8">
-            <a href="#features" className="text-gray-600 hover:text-[#2563eb]">ฟีเจอร์</a>
-            <a href="#pricing" className="text-gray-600 hover:text-[#2563eb]">ราคา</a>
+            <a href="#features" className="text-[#a1a1aa] hover:text-white transition">ฟีเจอร์</a>
+            <a href="#pricing" className="text-[#a1a1aa] hover:text-white transition">ราคา</a>
           </div>
 
           <div className="hidden md:flex items-center gap-4">
-            <a href="/login" className="text-gray-600 hover:text-[#2563eb]">เข้าสู่ระบบ</a>
+            <a href="/login" className="text-[#a1a1aa] hover:text-white transition">เข้าสู่ระบบ</a>
             <a href="/dashboard" className="btn btn-primary">เริ่มใช้งาน</a>
           </div>
 
@@ -66,11 +66,11 @@ export default function Home() {
         </div>
 
         {isMenuOpen && (
-          <div className="md:hidden bg-white border-t">
+          <div className="md:hidden bg-[#18181f] border-t border-[#27272a]">
             <div className="px-4 py-4 space-y-3">
-              <a href="#features" className="block text-gray-600">ฟีเจอร์</a>
-              <a href="#pricing" className="block text-gray-600">ราคา</a>
-              <a href="/login" className="block text-gray-600">เข้าสู่ระบบ</a>
+              <a href="#features" className="block text-[#a1a1aa]">ฟีเจอร์</a>
+              <a href="#pricing" className="block text-[#a1a1aa]">ราคา</a>
+              <a href="/login" className="block text-[#a1a1aa]">เข้าสู่ระบบ</a>
               <a href="/dashboard" className="block btn btn-primary text-center">เริ่มใช้งาน</a>
             </div>
           </div>
@@ -80,20 +80,27 @@ export default function Home() {
       {/* Hero */}
       <section className="pt-32 pb-20 px-4">
         <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#6366f1]/10 border border-[#6366f1]/30 mb-8 animate-fade-in">
+            <span className="w-2 h-2 bg-[#6366f1] rounded-full animate-pulse"></span>
+            <span className="text-sm text-[#a1a1aa]">AI-Powered Video Generator</span>
+          </div>
+          
+          <h1 className="text-5xl md:text-6xl font-bold mb-6 animate-fade-in animate-delay-1">
             สร้างวิดีโอสั้น<br />
-            <span className="text-[#2563eb]">ด้วย AI ในไม่กี่คลิก</span>
+            <span className="gradient-text">ด้วย AI ในไม่กี่คลิก</span>
           </h1>
-          <p className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto">
+          
+          <p className="text-xl text-[#a1a1aa] mb-10 max-w-2xl mx-auto animate-fade-in animate-delay-2">
             แค่ใส่ URL หรือหัวข้อ AI จะสร้างสคริปต์ เสียง และวิดีโอให้อัตโนมัติ
           </p>
           
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a href="/dashboard" className="btn btn-primary px-8 py-3">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in animate-delay-3">
+            <a href="/dashboard" className="btn btn-primary px-8 py-4 text-lg">
+              <Sparkles className="w-5 h-5 mr-2" />
               เริ่มฟรี
             </a>
-            <button className="btn btn-outline px-8 py-3">
-              <Play className="w-4 h-4 mr-2" />
+            <button className="btn btn-outline px-8 py-4 text-lg">
+              <Play className="w-5 h-5 mr-2" />
               ดูตัวอย่าง
             </button>
           </div>
@@ -101,19 +108,22 @@ export default function Home() {
       </section>
 
       {/* Features */}
-      <section id="features" className="py-20 px-4 bg-white">
+      <section id="features" className="py-20 px-4">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-4">ฟีเจอร์</h2>
-          <p className="text-gray-600 text-center mb-12">เครื่องมือครบวงจรสำหรับครีเอเตอร์</p>
+          <h2 className="text-4xl font-bold text-center mb-4 animate-fade-in">ฟีเจอร์</h2>
+          <p className="text-[#a1a1aa] text-center mb-16 animate-fade-in animate-delay-1">เครื่องมือครบวงจรสำหรับครีเอเตอร์</p>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid gap-6-cols-3">
             {features.map((feature, index) => (
-              <div key={index} className="card p-6 text-center">
-                <div className="w-14 h-14 bg-blue-50 rounded-xl flex items-center justify-center mx-auto mb-4">
-                  <feature.icon className="w-7 h-7 text-[#2563eb]" />
+              <div 
+                key={index} 
+                className={`card p-8 text-center hover-lift animate-fade-in animate-delay-${index + 2}`}
+              >
+                <div className="w-16 h-16 bg-gradient-to-br from-[#6366f1] to-[#a855f7] rounded-2xl flex items-center justify-center mx-auto mb-4 icon-hover">
+                  <feature.icon className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="font-semibold text-lg mb-2">{feature.title}</h3>
-                <p className="text-gray-600 text-sm">{feature.description}</p>
+                <h3 className="font-bold text-xl mb-2">{feature.title}</h3>
+                <p className="text-[#a1a1aa]">{feature.description}</p>
               </div>
             ))}
           </div>
@@ -123,28 +133,31 @@ export default function Home() {
       {/* Pricing */}
       <section id="pricing" className="py-20 px-4">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-4">เลือกแพลน</h2>
-          <p className="text-gray-600 text-center mb-12">เริ่มต้นฟรี ไม่ต้องใส่บัตรเครดิต</p>
+          <h2 className="text-4xl font-bold text-center mb-4 animate-fade-in">เลือกแพลน</h2>
+          <p className="text-[#a1a1aa] text-center mb-16 animate-fade-in animate-delay-1">เริ่มต้นฟรี ไม่ต้องใส่บัตรเครดิต</p>
 
-          <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
             {pricingPlans.map((plan, index) => (
-              <div key={index} className={`card p-8 ${plan.popular ? 'border-[#2563eb] ring-2 ring-[#2563eb] ring-opacity-20' : ''}`}>
+              <div 
+                key={index} 
+                className={`card p-8 ${plan.popular ? 'gradient-border' : ''} hover-lift`}
+              >
                 {plan.popular && (
-                  <div className="bg-[#2563eb] text-white text-xs font-medium px-3 py-1 rounded-full inline-block mb-4">
+                  <div className="bg-gradient-to-r from-[#6366f1] to-[#a855f7] text-white text-xs font-bold px-3 py-1 rounded-full inline-block mb-4">
                     Popular
                   </div>
                 )}
                 <h3 className="font-bold text-xl mb-2">{plan.name}</h3>
                 <div className="mb-4">
-                  <span className="text-4xl font-bold">฿{plan.price}</span>
-                  <span className="text-gray-500">/เดือน</span>
+                  <span className="text-5xl font-bold gradient-text">฿{plan.price}</span>
+                  <span className="text-[#a1a1aa]">/เดือน</span>
                 </div>
-                <p className="text-gray-600 text-sm mb-6">{plan.description}</p>
+                <p className="text-[#a1a1aa] text-sm mb-6">{plan.description}</p>
 
                 <ul className="space-y-3 mb-8">
                   {plan.features.map((feature, i) => (
                     <li key={i} className="flex items-center gap-2 text-sm">
-                      <Check className="w-4 h-4 text-green-500" />
+                      <Check className="w-4 h-4 text-[#10b981]" />
                       <span>{feature}</span>
                     </li>
                   ))}
@@ -160,10 +173,10 @@ export default function Home() {
       </section>
 
       {/* CTA */}
-      <section className="py-20 px-4 bg-white">
-        <div className="max-w-2xl mx-auto text-center card p-12">
-          <h2 className="text-2xl font-bold mb-4">พร้อมแล้วหรือยัง?</h2>
-          <p className="text-gray-600 mb-8">เริ่มใช้งานฟรีวันนี้</p>
+      <section className="py-20 px-4">
+        <div className="max-w-2xl mx-auto text-center card p-12 gradient-border glow animate-fade-in">
+          <h2 className="text-3xl font-bold mb-4">พร้อมแล้วหรือยัง?</h2>
+          <p className="text-[#a1a1aa] mb-8">เริ่มใช้งานฟรีวันนี้</p>
           
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto">
             <input 
@@ -174,26 +187,26 @@ export default function Home() {
               className="input"
             />
             <button className="btn btn-primary whitespace-nowrap">
-              เริ่มเลย
+              เริ่มเลย <ArrowRight className="w-4 h-4 ml-2" />
             </button>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="py-8 px-4 border-t">
+      <footer className="py-8 px-4 border-t border-[#27272a]">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <div className="w-6 h-6 bg-[#2563eb] rounded flex items-center justify-center">
+            <div className="w-8 h-8 bg-gradient-to-br from-[#6366f1] to-[#a855f7] rounded-lg flex items-center justify-center">
               <Zap className="w-4 h-4 text-white" />
             </div>
-            <span className="font-medium">AI Shorts</span>
+            <span className="font-bold">AI Shorts</span>
           </div>
           
-          <div className="flex items-center gap-6 text-sm text-gray-500">
-            <a href="#" className="hover:text-gray-900">นโยบายความเป็นส่วนตัว</a>
-            <a href="#" className="hover:text-gray-900">ข้อกำหนดการใช้งาน</a>
-            <a href="mailto:desanrong.sm@gmail.com" className="hover:text-gray-900">ติดต่อ</a>
+          <div className="flex items-center gap-6 text-sm text-[#a1a1aa]">
+            <a href="#" className="hover:text-white transition">นโยบายความเป็นส่วนตัว</a>
+            <a href="#" className="hover:text-white transition">ข้อกำหนดการใช้งาน</a>
+            <a href="mailto:desanrong.sm@gmail.com" className="hover:text-white transition">ติดต่อ</a>
           </div>
         </div>
       </footer>

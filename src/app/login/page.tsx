@@ -50,35 +50,35 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#fafafa] flex items-center justify-center px-4">
+    <div className="min-h-screen gradient-bg dot-pattern flex items-center justify-center px-4">
       <div className="w-full max-w-md">
         {/* Logo */}
-        <div className="text-center mb-8">
-          <a href="/" className="inline-flex items-center gap-2">
-            <div className="w-10 h-10 bg-[#2563eb] rounded-lg flex items-center justify-center">
+        <div className="text-center mb-8 animate-fade-in">
+          <a href="/" className="inline-flex items-center gap-3">
+            <div className="w-12 h-12 bg-gradient-to-br from-[#6366f1] to-[#a855f7] rounded-xl flex items-center justify-center animate-pulse-glow">
               <Zap className="w-6 h-6 text-white" />
             </div>
-            <span className="font-semibold text-xl">AI Shorts</span>
+            <span className="font-bold text-xl">AI Shorts</span>
           </a>
         </div>
 
         {/* Login Card */}
-        <div className="card p-8">
+        <div className="card p-8 animate-fade-in animate-delay-1">
           <h1 className="text-xl font-bold text-center mb-2">เข้าสู่ระบบ</h1>
-          <p className="text-gray-500 text-center mb-6">เพื่อเข้าใช้งาน</p>
+          <p className="text-[#a1a1aa] text-center mb-6">เพื่อเข้าใช้งาน</p>
 
           {error && (
-            <div className="flex items-center gap-2 px-4 py-3 bg-red-50 border border-red-200 rounded-lg mb-6">
-              <AlertCircle className="w-5 h-5 text-red-500" />
-              <span className="text-red-600 text-sm">{error}</span>
+            <div className="flex items-center gap-2 px-4 py-3 bg-red-500/10 border border-red-500/30 rounded-xl mb-6">
+              <AlertCircle className="w-5 h-5 text-red-400" />
+              <span className="text-red-400 text-sm">{error}</span>
             </div>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-gray-600 text-sm mb-2">อีเมล</label>
+              <label className="block text-[#a1a1aa] text-sm mb-2">อีเมล</label>
               <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#a1a1aa]" />
                 <input
                   type="email"
                   value={email}
@@ -91,9 +91,9 @@ export default function LoginPage() {
             </div>
 
             <div>
-              <label className="block text-gray-600 text-sm mb-2">รหัสผ่าน</label>
+              <label className="block text-[#a1a1aa] text-sm mb-2">รหัสผ่าน</label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#a1a1aa]" />
                 <input
                   type="password"
                   value={password}
@@ -120,10 +120,10 @@ export default function LoginPage() {
 
           <div className="relative my-6">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-200"></div>
+              <div className="w-full border-t border-[#27272a]"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-4 bg-white text-gray-500">หรือ</span>
+              <span className="px-4 bg-[#1f1f2a] text-[#a1a1aa]">หรือ</span>
             </div>
           </div>
 
@@ -138,7 +138,7 @@ export default function LoginPage() {
 
         {/* Back */}
         <div className="text-center mt-6">
-          <a href="/" className="text-gray-500 hover:text-[#2563eb] text-sm">
+          <a href="/" className="text-[#a1a1aa] hover:text-white text-sm transition">
             ← กลับหน้าหลัก
           </a>
         </div>
