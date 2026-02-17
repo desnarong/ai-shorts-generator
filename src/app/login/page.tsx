@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { Gamepad2, Mail, Lock, ArrowRight, AlertCircle } from 'lucide-react'
+import { Zap, Mail, Lock, ArrowRight, AlertCircle } from 'lucide-react'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -25,12 +25,12 @@ export default function LoginPage() {
       })
 
       if (result?.error) {
-        setError('Invalid email or password')
+        setError('อีเมลหรือรหัสผ่านไม่ถูกต้อง')
       } else {
         router.push('/dashboard')
       }
     } catch (err) {
-      setError('Something went wrong')
+      setError('เกิดข้อผิดพลาด')
     } finally {
       setLoading(false)
     }
@@ -39,7 +39,7 @@ export default function LoginPage() {
   const handleDemoLogin = async () => {
     setLoading(true)
     const result = await signIn('credentials', {
-      email: 'demo@ais shorts.com',
+      email: 'demo@ais horts.com',
       password: 'demo123',
       redirect: false
     })
@@ -50,40 +50,40 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f] bg-grid bg-particles flex items-center justify-center px-4">
+    <div className="min-h-screen bg-[#fafafa] flex items-center justify-center px-4">
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-3 mb-4">
-            <div className="w-12 h-12 gradient-gaming rounded-xl flex items-center justify-center">
-              <Gamepad2 className="w-7 h-7 text-black" />
+          <a href="/" className="inline-flex items-center gap-2">
+            <div className="w-10 h-10 bg-[#2563eb] rounded-lg flex items-center justify-center">
+              <Zap className="w-6 h-6 text-white" />
             </div>
-            <span className="font-bold text-2xl text-[#00ff88] neon-text tracking-wider">AI SHORTS</span>
-          </div>
+            <span className="font-semibold text-xl">AI Shorts</span>
+          </a>
         </div>
 
         {/* Login Card */}
-        <div className="gaming-card rounded-2xl p-8">
-          <h1 className="text-2xl font-bold text-white text-center mb-2 uppercase tracking-wider">LOGIN</h1>
-          <p className="text-gray-400 text-center mb-8">Sign in to continue</p>
+        <div className="card p-8">
+          <h1 className="text-xl font-bold text-center mb-2">เข้าสู่ระบบ</h1>
+          <p className="text-gray-500 text-center mb-6">เพื่อเข้าใช้งาน</p>
 
           {error && (
-            <div className="flex items-center gap-2 px-4 py-3 bg-[#ff00aa]/10 border border-[#ff00aa] rounded-lg mb-6">
-              <AlertCircle className="w-5 h-5 text-[#ff00aa]" />
-              <span className="text-[#ff00aa] text-sm">{error}</span>
+            <div className="flex items-center gap-2 px-4 py-3 bg-red-50 border border-red-200 rounded-lg mb-6">
+              <AlertCircle className="w-5 h-5 text-red-500" />
+              <span className="text-red-600 text-sm">{error}</span>
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-gray-400 text-sm uppercase tracking-wider mb-2">Email</label>
+              <label className="block text-gray-600 text-sm mb-2">อีเมล</label>
               <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-12 pr-4 py-3 bg-[#0a0a0f] border border-[#2a2a3e] rounded-lg focus:border-[#00ff88] focus:outline-none transition text-white"
+                  className="input pl-11"
                   placeholder="your@email.com"
                   required
                 />
@@ -91,14 +91,14 @@ export default function LoginPage() {
             </div>
 
             <div>
-              <label className="block text-gray-400 text-sm uppercase tracking-wider mb-2">Password</label>
+              <label className="block text-gray-600 text-sm mb-2">รหัสผ่าน</label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                 <input
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-12 pr-4 py-3 bg-[#0a0a0f] border border-[#2a2a3e] rounded-lg focus:border-[#00ff88] focus:outline-none transition text-white"
+                  className="input pl-11"
                   placeholder="••••••••"
                   required
                 />
@@ -108,11 +108,11 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full gaming-btn py-3 rounded-lg font-bold uppercase tracking-wider flex items-center justify-center gap-2 disabled:opacity-50"
+              className="w-full btn btn-primary py-3 flex items-center justify-center gap-2 disabled:opacity-50"
             >
-              {loading ? 'Loading...' : (
+              {loading ? 'กำลังโหลด...' : (
                 <>
-                  LOGIN <ArrowRight className="w-5 h-5" />
+                  เข้าสู่ระบบ <ArrowRight className="w-4 h-4" />
                 </>
               )}
             </button>
@@ -120,34 +120,26 @@ export default function LoginPage() {
 
           <div className="relative my-6">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-[#2a2a3e]"></div>
+              <div className="w-full border-t border-gray-200"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-4 bg-[#12121a] text-gray-500 uppercase tracking-wider">Or</span>
+              <span className="px-4 bg-white text-gray-500">หรือ</span>
             </div>
           </div>
 
           <button
             onClick={handleDemoLogin}
             disabled={loading}
-            className="w-full gaming-btn gaming-btn-pink py-3 rounded-lg font-bold uppercase tracking-wider disabled:opacity-50"
+            className="w-full btn btn-outline py-3 disabled:opacity-50"
           >
-            TRY DEMO
+            ลองใช้งาน Demo
           </button>
         </div>
 
-        {/* Register Link */}
-        <p className="text-center text-gray-500 mt-6 text-sm">
-          Don't have an account?{' '}
-          <a href="#" className="text-[#00ff88] hover:underline uppercase tracking-wider font-semibold">
-            Sign Up
-          </a>
-        </p>
-
         {/* Back */}
         <div className="text-center mt-6">
-          <a href="/" className="text-gray-500 hover:text-[#00ff88] transition text-sm uppercase tracking-wider">
-            ← Back to Home
+          <a href="/" className="text-gray-500 hover:text-[#2563eb] text-sm">
+            ← กลับหน้าหลัก
           </a>
         </div>
       </div>
