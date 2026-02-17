@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
       : { title: 'AI Video', script: content, hashtags: [] as string[] }
 
     // Step 2: Generate Voiceover  
-    const voiceUrl = await generateVoiceover(scriptResult.script, voiceId || 'default')
+    const voiceUrl = await generateVoiceover(scriptResult.script, voiceId || 'rachel')
 
     // Step 3: Generate Video
     const video = await generateVideo({
@@ -49,10 +49,10 @@ export async function POST(req: NextRequest) {
         status: 'completed'
       }
     })
-  } catch (error) {
+  } catch (error: any) {
     console.error('Generate error:', error)
     return NextResponse.json(
-      { error: 'Failed to generate video' },
+      { error: error.message || 'Failed to generate video' },
       { status: 500 }
     )
   }
