@@ -1,7 +1,22 @@
-import { PrismaClient } from '@prisma/client'
+// Database client - lazy loaded to prevent build-time connection issues
+// Use this instead of importing PrismaClient directly
 
-// Simple approach: create new instance each time
-// In serverless, each invocation gets a fresh instance anyway
-// At build time, DATABASE_URL should be available from Vercel env vars
+let prismaClient: any = null
 
-export const db = new PrismaClient()
+export function getDb() {
+  if (!prismaClient) {
+    // Dynamic import - this only runs at runtime
+    const { PrismaClient } = require('@prisma/client')
+    prismaClient = new PrismaClient()
+  }
+  return prismaClient
+}
+
+export const db = new Proxy({} as any, {
+  get(_target, prop) {
+    return async (...args: any[]) => {
+      const client = getDb()
+      return client[prop](...args)
+    }
+  }
+})
