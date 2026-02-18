@@ -19,6 +19,7 @@ export default function Dashboard() {
   const [generating, setGenerating] = useState(false)
   const [lastResult, setLastResult] = useState<any>(null)
   const [error, setError] = useState('')
+  const [debug, setDebug] = useState<string[]>([])
   
   const [contentType, setContentType] = useState('url')
   const [content, setContent] = useState('')
@@ -43,7 +44,6 @@ export default function Dashboard() {
     return null
   }
 
-  // Plan features
   const planFeatures = {
     free: { voices: ['thai_female', 'thai_male'], watermark: true, quality: '720p' },
     starter: { voices: ['thai_female', 'thai_male', 'rachel', 'josh', 'emma'], watermark: false, quality: '720p' },
@@ -52,58 +52,50 @@ export default function Dashboard() {
   }
 
   const voiceNames: Record<string, string> = {
-    thai_female: 'น้องแนน (ไทย)',
-    thai_male: 'พี่โจ้ (ไทย)',
-    rachel: 'Rachel (English)',
-    josh: 'Josh (English)',
-    emma: 'Emma (English)',
-    david: 'David (English)',
-    crystal: 'Crystal (English)',
-    aria: 'Aria (English)',
-    fin: 'Fin (English)',
-    domi: 'Domi (English)'
+    thai_female: 'น้องแนน (ไทย)', thai_male: 'พี่โจ้ (ไทย)',
+    rachel: 'Rachel', josh: 'Josh', emma: 'Emma', david: 'David',
+    crystal: 'Crystal', aria: 'Aria', fin: 'Fin', domi: 'Domi'
   }
 
   const handleGenerate = async () => {
     if (!content.trim()) return
     setGenerating(true)
     setError('')
+    setDebug([])
     setLastResult(null)
     
     try {
       const response = await fetch('/api/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          type: contentType,
-          content,
-          platform,
-          voiceId: voice,
-          userId: 'demo'
-        })
+        body: JSON.stringify({ type: contentType, content, platform, voiceId: voice, userId: 'demo' })
       })
       
       const data = await response.json()
       
+      // Show debug info
+      if (data._debug) {
+        setDebug(data._debug)
+        console.log('DEBUG:', data._debug)
+      }
+      
       if (data.success) {
         setLastResult(data.video)
-        setVideos(prev => [{
+        setVideos(prev => [...prev, {
           id: String(Date.now()),
           title: data.video.title || 'วิดีโอใหม่',
           status: 'completed',
           createdAt: new Date().toISOString().split('T')[0],
-          thumbnail: null,
-          duration: '0:30',
           quality: data.video.quality,
           watermark: data.video.watermark
-        }, ...prev])
+        }])
         setContent('')
         setCredits(prev => ({ ...prev, used: prev.used + 1 }))
       } else {
         setError(data.error || 'เกิดข้อผิดพลาด')
       }
-    } catch (err) {
-      setError('เกิดข้อผิดพลาด')
+    } catch (err: any) {
+      setError(err.message)
     } finally {
       setGenerating(false)
     }
@@ -155,20 +147,6 @@ export default function Dashboard() {
             </button>
           </div>
         </div>
-
-        {mobileMenuOpen && (
-          <div className="md:hidden bg-zinc-900 border-t border-zinc-800 px-4 py-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2 px-3 py-1.5 bg-zinc-800 rounded-lg">
-                <Zap className="w-4 h-4 text-[#22c55e]" />
-                <span className="font-bold">{credits.limit - credits.used}</span>
-              </div>
-              <button onClick={() => signOut({ callbackUrl: '/' })} className="text-zinc-400">
-                <LogOut className="w-5 h-5" />
-              </button>
-            </div>
-          </div>
-        )}
       </header>
 
       <div className="max-w-7xl mx-auto px-4 py-8">
@@ -178,9 +156,7 @@ export default function Dashboard() {
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
               className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-medium text-sm transition whitespace-nowrap ${
-                activeTab === tab.id 
-                  ? 'bg-gradient-to-r from-[#22c55e] to-[#16a34a] text-white' 
-                  : 'card text-zinc-400 hover:text-white'
+                activeTab === tab.id ? 'bg-gradient-to-r from-[#22c55e] to-[#16a34a] text-white' : 'card text-zinc-400 hover:text-white'
               }`}
             >
               <tab.icon className="w-4 h-4" />
@@ -207,11 +183,7 @@ export default function Dashboard() {
               <div className="space-y-5">
                 <div>
                   <label className="block text-zinc-400 text-sm mb-2">ประเภทเนื้อหา</label>
-                  <select 
-                    value={contentType}
-                    onChange={(e) => setContentType(e.target.value)}
-                    className="input-field"
-                  >
+                  <select value={contentType} onChange={(e) => setContentType(e.target.value)} className="input-field">
                     <option value="url">URL (บทความ/วิดีโอ)</option>
                     <option value="topic">หัวข้อ/คีย์เวิร์ด</option>
                     <option value="text">ข้อความ</option>
@@ -219,18 +191,12 @@ export default function Dashboard() {
                 </div>
 
                 <div>
-                  <label className="block text-zinc-400 text-sm mb-2">
-                    {contentType === 'url' ? 'URL' : contentType === 'topic' ? 'หัวข้อ' : 'ข้อความ'}
-                  </label>
+                  <label className="block text-zinc-400 text-sm mb-2">เนื้อหา</label>
                   <textarea 
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
                     className="input-field h-32 resize-none"
-                    placeholder={
-                      contentType === 'url' ? 'https://...' : 
-                      contentType === 'topic' ? 'เช่น: วิธีทำอาหารไทย' : 
-                      'ใส่เนื้อหาที่ต้องการ...'
-                    }
+                    placeholder={contentType === 'url' ? 'https://...' : contentType === 'topic' ? 'เช่น: วิธีทำอาหารไทย' : 'ใส่เนื้อหา...'}
                   />
                 </div>
 
@@ -241,11 +207,7 @@ export default function Dashboard() {
                       <button 
                         key={p}
                         onClick={() => setPlatform(p)}
-                        className={`px-4 py-2 rounded-xl border transition ${
-                          platform === p 
-                            ? 'border-[#22c55e] text-[#22c55e] bg-[#22c55e]/10' 
-                            : 'border-zinc-700 text-zinc-400 hover:border-zinc-500'
-                        }`}
+                        className={`px-4 py-2 rounded-xl border transition ${platform === p ? 'border-[#22c55e] text-[#22c55e] bg-[#22c55e]/10' : 'border-zinc-700 text-zinc-400'}`}
                       >
                         {p.charAt(0).toUpperCase() + p.slice(1)}
                       </button>
@@ -255,18 +217,11 @@ export default function Dashboard() {
 
                 <div>
                   <label className="block text-zinc-400 text-sm mb-2">เสียง</label>
-                  <select 
-                    value={voice}
-                    onChange={(e) => setVoice(e.target.value)}
-                    className="input-field"
-                  >
+                  <select value={voice} onChange={(e) => setVoice(e.target.value)} className="input-field">
                     {currentPlanFeatures.voices.map(v => (
                       <option key={v} value={v}>{voiceNames[v] || v}</option>
                     ))}
                   </select>
-                  <p className="text-xs text-zinc-500 mt-1">
-                    แพลน {userPlan} รองรับ {currentPlanFeatures.voices.length} เสียง
-                  </p>
                 </div>
 
                 <div className="bg-zinc-800/50 rounded-xl p-4 text-sm">
@@ -287,86 +242,65 @@ export default function Dashboard() {
                   disabled={generating || !content.trim()}
                   className="w-full btn-primary py-4 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {generating ? (
-                    <>
-                      <RefreshCw className="w-5 h-5 animate-spin" />
-                      กำลังสร้าง...
-                    </>
-                  ) : (
-                    <>
-                      <Sparkles className="w-5 h-5" />
-                      สร้างวิดีโอ
-                    </>
-                  )}
+                  {generating ? <><RefreshCw className="w-5 h-5 animate-spin" /> กำลังสร้าง...</> : <><Sparkles className="w-5 h-5" /> สร้างวิดีโอ</>}
                 </button>
               </div>
             </div>
 
-            <div className="card p-8">
-              <h3 className="text-lg font-semibold mb-4">ผลลัพธ์</h3>
-              
-              {lastResult ? (
-                <div className="space-y-4">
-                  <div className="bg-black rounded-2xl aspect-[9/16] flex items-center justify-center border border-zinc-800">
-                    <video 
-                      src={lastResult.videoUrl} 
-                      className="w-full h-full object-cover rounded-2xl"
-                      controls
-                    />
-                  </div>
-
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-zinc-400">คุณภาพ: {lastResult.quality}</span>
-                    {lastResult.watermark && <span className="text-yellow-500">Watermark</span>}
-                  </div>
-
-                  <div className="bg-zinc-900 rounded-xl p-4">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm text-zinc-400 flex items-center gap-2">
-                        <Volume2 className="w-4 h-4" /> Script
-                      </span>
-                      <button 
-                        onClick={() => copyToClipboard(lastResult.script)}
-                        className="text-zinc-500 hover:text-white transition"
-                      >
-                        {copied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
-                      </button>
-                    </div>
-                    <p className="text-sm whitespace-pre-wrap">{lastResult.script}</p>
-                  </div>
-
-                  <div className="flex flex-wrap gap-2">
-                    {lastResult.hashtags?.map((tag: string, i: number) => (
-                      <span key={i} className="px-3 py-1 bg-[#22c55e]/10 text-[#22c55e] rounded-full text-sm">
-                        {tag}
-                      </span>
+            <div className="space-y-4">
+              {/* Debug */}
+              {debug.length > 0 && (
+                <div className="card p-4 bg-yellow-900/20 border-yellow-500/30">
+                  <h4 className="text-yellow-500 font-bold mb-2">🔧 Debug</h4>
+                  <div className="text-xs font-mono text-yellow-200 max-h-40 overflow-auto">
+                    {debug.map((line, i) => (
+                      <div key={i}>{line}</div>
                     ))}
-                  </div>
-
-                  {lastResult.voiceUrl && (
-                    <div className="bg-zinc-900 rounded-xl p-4">
-                      <span className="text-sm text-zinc-400 flex items-center gap-2 mb-2">
-                        <Volume2 className="w-4 h-4" /> เสียง
-                      </span>
-                      <audio src={lastResult.voiceUrl} controls className="w-full" />
-                    </div>
-                  )}
-                </div>
-              ) : generating ? (
-                <div className="bg-black rounded-2xl aspect-[9/16] flex items-center justify-center border border-zinc-800">
-                  <div className="text-center">
-                    <RefreshCw className="w-12 h-12 text-[#22c55e] animate-spin mx-auto mb-4" />
-                    <p className="text-zinc-500">กำลังสร้างวิดีโอ...</p>
-                  </div>
-                </div>
-              ) : (
-                <div className="bg-black rounded-2xl aspect-[9/16] flex items-center justify-center border border-zinc-800">
-                  <div className="text-center text-zinc-500">
-                    <Sparkles className="w-16 h-16 mx-auto mb-4 opacity-30" />
-                    <p>ใส่เนื้อหาแล้วกดสร้างวิดีโอ</p>
                   </div>
                 </div>
               )}
+
+              {/* Result */}
+              <div className="card p-8">
+                <h3 className="text-lg font-semibold mb-4">ผลลัพธ์</h3>
+                
+                {lastResult ? (
+                  <div className="space-y-4">
+                    <div className="bg-black rounded-2xl aspect-[9/16] flex items-center justify-center border border-zinc-800">
+                      <video src={lastResult.videoUrl} className="w-full h-full object-cover rounded-2xl" controls />
+                    </div>
+
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-zinc-400">คุณภาพ: {lastResult.quality}</span>
+                      {lastResult.watermark && <span className="text-yellow-500">Watermark</span>}
+                    </div>
+
+                    <div className="bg-zinc-900 rounded-xl p-4">
+                      <p className="text-sm whitespace-pre-wrap">{lastResult.script}</p>
+                    </div>
+
+                    <div className="flex flex-wrap gap-2">
+                      {lastResult.hashtags?.map((tag: string, i: number) => (
+                        <span key={i} className="px-3 py-1 bg-[#22c55e]/10 text-[#22c55e] rounded-full text-sm">{tag}</span>
+                      ))}
+                    </div>
+                  </div>
+                ) : generating ? (
+                  <div className="bg-black rounded-2xl aspect-[9/16] flex items-center justify-center border border-zinc-800">
+                    <div className="text-center">
+                      <RefreshCw className="w-12 h-12 text-[#22c55e] animate-spin mx-auto mb-4" />
+                      <p className="text-zinc-500">กำลังสร้างวิดีโอ...</p>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="bg-black rounded-2xl aspect-[9/16] flex items-center justify-center border border-zinc-800">
+                    <div className="text-center text-zinc-500">
+                      <Sparkles className="w-16 h-16 mx-auto mb-4 opacity-30" />
+                      <p>ใส่เนื้อหาแล้วกดสร้างวิดีโอ</p>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         )}
@@ -374,7 +308,6 @@ export default function Dashboard() {
         {activeTab === 'videos' && (
           <div className="card p-8">
             <h2 className="text-2xl font-bold mb-6">วิดีโอของฉัน</h2>
-
             {videos.length === 0 ? (
               <div className="text-center py-16 text-zinc-500">
                 <Video className="w-16 h-16 mx-auto mb-4 opacity-30" />
@@ -383,25 +316,16 @@ export default function Dashboard() {
             ) : (
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {videos.map((video) => (
-                  <div key={video.id} className="bg-zinc-900 rounded-xl overflow-hidden border border-zinc-800 hover:border-[#22c55e] transition group">
+                  <div key={video.id} className="bg-zinc-900 rounded-xl overflow-hidden border border-zinc-800">
                     <div className="aspect-video bg-black flex items-center justify-center relative">
-                      <Play className="w-12 h-12 text-zinc-600 group-hover:text-[#22c55e] transition" />
-                      <span className="absolute bottom-2 right-2 px-2 py-1 bg-black/80 rounded text-xs">
-                        {video.duration}
-                      </span>
-                      {video.watermark && (
-                        <span className="absolute top-2 left-2 px-2 py-1 bg-yellow-500/20 text-yellow-500 rounded text-xs">
-                          WM
-                        </span>
-                      )}
+                      <Play className="w-12 h-12 text-zinc-600" />
+                      {video.watermark && <span className="absolute top-2 left-2 px-2 py-1 bg-yellow-500/20 text-yellow-500 rounded text-xs">WM</span>}
                     </div>
                     <div className="p-4">
                       <h3 className="font-medium mb-2 truncate">{video.title}</h3>
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="text-zinc-500">{video.createdAt}</span>
-                        <button className="text-[#22c55e] hover:underline flex items-center gap-1">
-                          <Download className="w-4 h-4" /> ดาวน์โหลด
-                        </button>
+                      <div className="flex items-center justify-between text-sm text-zinc-500">
+                        <span>{video.createdAt}</span>
+                        <button className="text-[#22c55e]"><Download className="w-4 h-4" /></button>
                       </div>
                     </div>
                   </div>
@@ -415,7 +339,6 @@ export default function Dashboard() {
           <div className="space-y-6">
             <div className="card p-8">
               <h2 className="text-2xl font-bold mb-6">เครดิตของฉัน</h2>
-
               <div className="grid sm:grid-cols-3 gap-6 mb-8">
                 <div className="bg-zinc-900 rounded-xl p-6 text-center border border-zinc-800">
                   <div className="text-zinc-500 text-sm mb-2">คงเหลือ</div>
@@ -430,60 +353,28 @@ export default function Dashboard() {
                   <div className="text-5xl font-bold">{credits.limit}</div>
                 </div>
               </div>
-
-              <button className="btn-primary px-8 py-4">
-                ซื้อเครดิตเพิ่ม
-              </button>
+              <button className="btn-primary px-8 py-4">ซื้อเครดิตเพิ่ม</button>
             </div>
 
             <div className="card p-8">
-              <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
-                <Crown className="w-5 h-5 text-yellow-500" />
-                แพลน Premium
-              </h3>
-              
+              <h3 className="text-xl font-bold mb-6 flex items-center gap-2"><Crown className="w-5 h-5 text-yellow-500" />แพลน Premium</h3>
               <div className="grid md:grid-cols-3 gap-6">
-                <div className="bg-zinc-900 rounded-xl p-6 border border-zinc-800">
-                  <div className="flex items-center justify-between mb-4">
-                    <h4 className="font-bold text-lg">Starter</h4>
-                    <span className="text-2xl font-bold">฿199<span className="text-zinc-500 text-sm">/เดือน</span></span>
+                {[
+                  { name: 'Starter', price: '199', features: ['10 shorts', 'ไม่มี WM', '720p', '5 เสียง'] },
+                  { name: 'Pro', price: '499', features: ['30 shorts', 'ไม่มี WM', '1080p', '10 เสียง'], popular: true },
+                  { name: 'Business', price: '1,499', features: ['ไม่จำกัด', '4K', 'API', 'Support'] }
+                ].map((plan) => (
+                  <div key={plan.name} className={`bg-zinc-900 rounded-xl p-6 border ${plan.popular ? 'border-[#22c55e]' : 'border-zinc-800'}`}>
+                    <div className="flex items-center justify-between mb-4">
+                      <h4 className="font-bold text-lg">{plan.name}</h4>
+                      <span className="text-2xl font-bold">฿{plan.price}<span className="text-zinc-500 text-sm">/เดือน</span></span>
+                    </div>
+                    <ul className="space-y-2 text-zinc-400 text-sm mb-6">
+                      {plan.features.map((f, i) => <li key={i}>• {f}</li>)}
+                    </ul>
+                    <button className={`w-full py-3 rounded-xl ${plan.popular ? 'btn-primary' : 'btn-outline'}`}>อัพเกรด</button>
                   </div>
-                  <ul className="space-y-2 text-zinc-400 text-sm mb-6">
-                    <li>• 10 shorts/เดือน</li>
-                    <li>• ไม่มี Watermark</li>
-                    <li>• คุณภาพ 720p</li>
-                    <li>• เสียง 5 แบบ</li>
-                  </ul>
-                  <button className="w-full btn-outline py-3">อัพเกรด</button>
-                </div>
-
-                <div className="bg-zinc-900 rounded-xl p-6 border border-[#22c55e]">
-                  <div className="flex items-center justify-between mb-4">
-                    <h4 className="font-bold text-lg">Pro</h4>
-                    <span className="text-2xl font-bold">฿499<span className="text-zinc-500 text-sm">/เดือน</span></span>
-                  </div>
-                  <ul className="space-y-2 text-zinc-400 text-sm mb-6">
-                    <li>• 30 shorts/เดือน</li>
-                    <li>• ไม่มี Watermark</li>
-                    <li>• คุณภาพ 1080p</li>
-                    <li>• เสียง VIP 10+</li>
-                  </ul>
-                  <button className="w-full btn-primary py-3">อัพเกรด</button>
-                </div>
-
-                <div className="bg-zinc-900 rounded-xl p-6 border border-zinc-800">
-                  <div className="flex items-center justify-between mb-4">
-                    <h4 className="font-bold text-lg">Business</h4>
-                    <span className="text-2xl font-bold">฿1,499<span className="text-zinc-500 text-sm">/เดือน</span></span>
-                  </div>
-                  <ul className="space-y-2 text-zinc-400 text-sm mb-6">
-                    <li>• ไม่จำกัด</li>
-                    <li>• คุณภาพ 4K</li>
-                    <li>• API Access</li>
-                    <li>• Support 24/7</li>
-                  </ul>
-                  <button className="w-full btn-outline py-3">อัพเกรด</button>
-                </div>
+                ))}
               </div>
             </div>
           </div>
