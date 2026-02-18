@@ -5,6 +5,13 @@ import { generateVideo } from '@/lib/ai/video'
 
 export const dynamic = 'force-dynamic'
 
+// Debug: Log environment variables
+console.log('=== ENV DEBUG ===')
+console.log('OPENAI_API_KEY:', process.env.OPENAI_API_KEY ? 'SET (length: ' + process.env.OPENAI_API_KEY.length + ')' : 'NOT SET')
+console.log('ELEVENLABS_API_KEY:', process.env.ELEVENLABS_API_KEY ? 'SET (length: ' + process.env.ELEVENLABS_API_KEY.length + ')' : 'NOT SET')
+console.log('REPLICATE_API_TOKEN:', process.env.REPLICATE_API_TOKEN ? 'SET (length: ' + process.env.REPLICATE_API_TOKEN.length + ')' : 'NOT SET')
+console.log('==================')
+
 // Plan features
 const PLAN_FEATURES = {
   free: {
@@ -93,19 +100,25 @@ export async function POST(req: NextRequest) {
     const videoQuality = platform === 'youtube' ? '1080p' : planFeatures.maxQuality
 
     // Step 1: Generate Script
+    console.log('Generating script...')
     const scriptResult = type === 'url' || type === 'topic' 
       ? await generateScript({ content, type })
       : { title: 'AI Video', script: content, hashtags: [] as string[] }
+    console.log('Script generated:', scriptResult.title)
 
     // Step 2: Generate Voiceover  
+    console.log('Generating voiceover...')
     const voiceUrl = await generateVoiceover(scriptResult.script, voiceId || planFeatures.voices[0])
+    console.log('Voice generated:', voiceUrl)
 
     // Step 3: Generate Video
+    console.log('Generating video...')
     const video = await generateVideo({
       script: scriptResult.script,
       voiceUrl,
       platform: platform || 'tiktok'
     })
+    console.log('Video generated:', video.url)
 
     return NextResponse.json({
       success: true,
