@@ -16,6 +16,7 @@ export async function generateScript(options: ScriptOptions): Promise<ScriptResu
   
   // If no API key, return mock
   if (!apiKey) {
+    console.log('[Script] No API key, using mock')
     return getMockScript(content, type)
   }
 
@@ -30,6 +31,8 @@ export async function generateScript(options: ScriptOptions): Promise<ScriptResu
       prompt = `สร้างสคริปต์วิดีโอสั้น 60 วินาที: ${content}`
     }
 
+    console.log('[Script] Calling OpenAI with prompt:', prompt.substring(0, 50) + '...')
+    
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -55,11 +58,14 @@ export async function generateScript(options: ScriptOptions): Promise<ScriptResu
 
     // If API key is invalid, return mock
     if (!response.ok) {
-      console.log('OpenAI API error, using mock script')
+      const errorText = await response.text()
+      console.log('[Script] OpenAI error:', response.status, errorText)
       return getMockScript(content, type)
     }
 
     const data = await response.json()
+    console.log('[Script] OpenAI response:', JSON.stringify(data).substring(0, 100) + '...')
+    
     const script = data.choices[0]?.message?.content || ''
     
     const hashtags = script.match(/#[a-zA-Zก-๙]+/g) || ['#ais shorts', '#viral']
@@ -69,8 +75,8 @@ export async function generateScript(options: ScriptOptions): Promise<ScriptResu
       script: script,
       hashtags: hashtags.slice(0, 5)
     }
-  } catch (error) {
-    console.log('OpenAI error, using mock script:', error)
+  } catch (error: any) {
+    console.log('[Script] Exception:', error.message)
     return getMockScript(content, type)
   }
 }
