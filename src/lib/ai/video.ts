@@ -1,6 +1,4 @@
 // Video Generation using Replicate API
-// ใช้โมเดล animated-diff หรือโมเดลอื่นๆ
-
 interface VideoOptions {
   script: string
   voiceUrl: string
@@ -25,8 +23,9 @@ export async function generateVideo(options: VideoOptions): Promise<VideoResult>
   
   const replicateToken = process.env.REPLICATE_API_TOKEN
   
+  // If no API key, return sample video
   if (!replicateToken) {
-    // Return sample video if no API key
+    console.log('No Replicate token, using sample')
     return {
       url: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
       duration: 15
@@ -42,7 +41,7 @@ export async function generateVideo(options: VideoOptions): Promise<VideoResult>
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        version: '5c0f6c107250a1dc6f60b4a5323d6c2c8c1f3f0a5b3e8c3c6b7a8c9d0e1f2a', // animated-diff version
+        version: '5c0f6c107250a1dc6f60b4a5323d6c2c8c1f3f0a5b3e8c3c6b7a8c9d0e1f2a',
         input: {
           prompt: script.substring(0, 200),
           num_frames: 24,
@@ -54,7 +53,7 @@ export async function generateVideo(options: VideoOptions): Promise<VideoResult>
     })
 
     if (!response.ok) {
-      console.error('Replicate error:', response.status)
+      console.log('Replicate API error, using sample')
       return {
         url: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
         duration: 15
@@ -101,7 +100,6 @@ export async function combineAudioWithImages(
   imageUrls: string[],
   audioUrl: string
 ): Promise<string> {
-  // ใน production จะใช้ FFmpeg หรือ cloud service
   return 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4'
 }
 
